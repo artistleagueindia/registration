@@ -114,12 +114,17 @@
       </div>
 
       <div class="qrbox">
-        <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
-        <!-- Static QR images generated from Google Chart API for fixed UPI links -->
-        <img id="qr8499" alt="UPI QR 8499">
-        <img id="qr6499" alt="UPI QR 6499" style="display:none;">
-        <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
-      </div>
+  <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
+
+  <!-- Default QR for 8499 -->
+  <img id="qr8499" src="qr8499.png" alt="UPI QR 8499">
+
+  <!-- Discounted QR for 6499 (hidden initially) -->
+  <img id="qr6499" src="qr6499.png" alt="UPI QR 6499" style="display:none;">
+
+  <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
+</div>
+
 
       <div class="calc" style="margin-top:16px;">
         <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
