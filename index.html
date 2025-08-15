@@ -47,8 +47,10 @@
       <label for="email">Email</label>
       <input id="email" name="email" type="email" required>
 
-      <label for="phone">Phone</label>
-      <input id="phone" name="phone" inputmode="numeric" pattern="\\d{10,}" placeholder="10+ digits" required>
+      
+      <input <label for="phone">Phone</label>
+            <!-- avoid strict pattern to prevent browser "match format" UI on mobile; we validate in JS -->
+            <input id="phone" name="phone" inputmode="tel" maxlength="15" placeholder="10+ digits (numbers only)" required />
 
       <label for="insta">Instagram Profile Link</label>
       <input id="insta" name="instagram" placeholder="https://instagram.com/...">
