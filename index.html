@@ -2,134 +2,122 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Artist League Camp 2025 — Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Artist League Camp 2025 – Registration</title>
 <style>
-  :root { --bg:#0b0b10; --card:#141420; --text:#f5f7ff; --muted:#a8acc3; --accent:#5b8cff; --ok:#1db954; --warn:#ffb020; --danger:#ff6b6b; }
-  body{margin:0; font-family:Inter,system-ui,Arial,Helvetica; background:var(--bg); color:var(--text);}
-  .wrap{max-width:980px; margin:28px auto; padding:18px;}
-  .grid{display:grid; grid-template-columns:1fr 400px; gap:18px;}
+  :root { --bg:#0b0b10; --card:#141420; --text:#f5f7ff; --muted:#a8acc3; --accent:#5b8cff; --ok:#1db954; --err:#e25b5b; }
+  body{margin:0; font-family:Inter,system-ui,Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1000px; margin:20px auto; padding:18px;}
+  .grid{display:grid; grid-template-columns:1fr 380px; gap:18px;}
   .card{background:var(--card); border-radius:14px; padding:18px;}
   h1{font-size:20px; margin:0 0 12px;}
-  label{display:block; font-size:13px; margin:10px 0 6px; color:var(--muted);}
-  input,select,textarea{width:100%; padding:10px 12px; border-radius:10px; border:1px solid #2a2a3a; background:#0d0d12; color:var(--text); box-sizing:border-box;}
-  .row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-  .coupon-bar{display:flex; gap:8px; align-items:center; margin-top:6px;}
-  .btn{padding:10px 14px; border:0; border-radius:10px; cursor:pointer; color:#fff; background:var(--accent); font-weight:600;}
+  label{display:block; font-size:13px; margin:8px 0 6px; color:var(--muted);}
+  input,select,textarea{width:100%; padding:10px 12px; border-radius:10px; border:1px solid #2a2a3a; background:#0f1016; color:var(--text); box-sizing:border-box;}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start;}
+  .coupon-bar{display:flex; gap:8px; align-items:center;}
+  .btn{padding:10px 14px; border:0; border-radius:10px; cursor:pointer; color:#fff; background:var(--accent);}
   .btn.secondary{background:#2a2a3a;}
-  .btn.ok{background:var(--ok);}
   .muted{color:var(--muted); font-size:12px;}
   .calc{background:#0f1320; border:1px solid #2a314b; border-radius:12px; padding:12px; margin-top:12px;}
   .calc .line{display:flex; justify-content:space-between; margin:6px 0;}
   .calc .total{font-weight:700; font-size:18px;}
   .qrbox{display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:12px;}
-  .qrbox img{width:260px; height:260px; image-rendering:pixelated; border-radius:14px; background:#fff;}
-  .copy{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
-  .okmsg{margin-top:12px; padding:10px; border-radius:10px; background:#07311d; border:1px solid #174f2f; color:var(--ok);}
-  .errmsg{margin-top:12px; padding:10px; border-radius:10px; background:#2a1414; border:1px solid #7d1e1e; color:var(--danger);}
-  .small{font-size:13px;}
-  .file-info{font-size:13px; color:var(--muted);}
-  @media (max-width:980px){ .grid{grid-template-columns:1fr;} }
+  .qrbox img{width:260px; height:260px; border-radius:12px; background:#fff; object-fit:contain;}
+  .okmsg{margin-top:12px; padding:10px; border-radius:8px; background:#0f1f14; border:1px solid #1e7d3b; color:var(--ok);}
+  .errmsg{margin-top:12px; padding:10px; border-radius:8px; background:#2a1414; border:1px solid #7d1e1e; color:var(--err);}
+  .info{font-size:13px; color:var(--muted);}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr;} .row{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="grid">
-    <!-- LEFT: Registration form -->
+    <!-- LEFT -->
     <div class="card">
       <h1>Artist League Camp 2025 — Registration</h1>
-
-      <form id="regForm" autocomplete="on" novalidate>
+      <form id="regForm">
         <div class="row">
           <div>
             <label for="name">Name</label>
-            <input id="name" name="name" required />
+            <input id="name" name="name" required>
           </div>
           <div>
             <label for="age">Age</label>
-            <input id="age" name="age" type="number" min="5" max="99" />
+            <input id="age" name="age" type="number" min="5" max="99" >
           </div>
         </div>
 
-        <div class="row" style="margin-top:6px;">
+        <div class="row">
           <div>
             <label for="currentCity">Current City</label>
-            <input id="currentCity" name="currentCity" placeholder="Your city (where you live)" />
+            <input id="currentCity" name="currentCity" placeholder="Where you live (e.g. Delhi)">
           </div>
           <div>
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" required />
+            <input id="email" name="email" type="email" required>
           </div>
         </div>
 
-        <div class="row" style="margin-top:6px;">
+        <div class="row">
           <div>
             <label for="phone">Phone</label>
-            <!-- pattern allows +, digits, spaces and dashes to avoid autofill validation errors on iOS -->
-            <input id="phone" name="phone" type="tel" inputmode="tel"
-                   pattern="^[0-9+\-\s]{10,15}$"
-                   title="Enter 10-15 digits. You may include +, spaces or -."
-                   placeholder="10+ digits"
-                   required />
+            <!-- use tel + inputmode numeric + pattern for validation -->
+            <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="\\d{10,}" maxlength="15" placeholder="10+ digits" required>
           </div>
           <div>
             <label for="insta">Instagram Profile Link</label>
-            <input id="insta" name="insta" placeholder="https://instagram.com/…" />
+            <input id="insta" name="insta" placeholder="https://instagram.com/…">
           </div>
         </div>
 
-        <label for="cop" style="margin-top:12px;">City of Participation</label>
-        <select id="cop" name="cop" required>
-          <option value="">Choose…</option>
-          <option>Mumbai</option>
-          <option>Pune</option>
-        </select>
-
-        <label style="margin-top:12px;">Coupon Code (optional)</label>
-        <div class="coupon-bar">
-          <input id="coupon" name="coupon" placeholder="Enter coupon (if any)" />
-          <button class="btn" type="button" id="applyBtn">Apply</button>
-          <div id="couponStatus" class="small muted" aria-live="polite"></div>
+        <div>
+          <label for="cop">City of Participation</label>
+          <select id="cop" name="cop" required>
+            <option value="">Choose…</option>
+            <option>Mumbai</option>
+            <option>Pune</option>
+          </select>
         </div>
-        <!-- hidden: coupon list removed for privacy -->
 
-        <div class="calc" id="calcBox" aria-live="polite">
+        <label>Coupon Code (optional)</label>
+        <div class="coupon-bar" style="margin-bottom:8px;">
+          <input id="coupon" name="coupon" placeholder="Enter coupon (if any)">
+          <button class="btn" type="button" id="applyBtn">Apply</button>
+        </div>
+        <!-- hidden coupon list — not shown to user -->
+
+        <div class="calc" id="calcBox">
           <div class="line"><span>Total fee</span><span>₹ <span id="totalFee">8499</span></span></div>
           <div class="line"><span>Discount</span><span>- ₹ <span id="discountAmt">0</span></span></div>
           <div class="line total"><span>Amount payable</span><span>₹ <span id="payAmt">8499</span></span></div>
         </div>
 
-        <label style="margin-top:12px;">Upload Payment Screenshot (required — ≤ 100 MB)</label>
-        <input id="screenshot" name="screenshot" type="file" accept="image/*,application/pdf" />
-        <div class="file-info" id="fileInfo">No file chosen</div>
-        <div class="muted small" style="margin-top:8px;">Please upload the payment screenshot. Submission is disabled until the file is processed.</div>
+        <label for="screenshot">Upload Payment Screenshot (required — ≤ 100 MB)</label>
+        <input id="screenshot" name="screenshot" type="file" accept="image/*,application/pdf" required>
 
-        <div id="okMsg" class="okmsg" style="display:none;"></div>
-        <div id="errMsg" class="errmsg" style="display:none;"></div>
+        <div id="fileStatus" class="info" style="margin-top:8px;"></div>
+        <div class="errmsg" id="errMsg" style="display:none;"></div>
+        <div class="okmsg" id="okMsg" style="display:none;"></div>
 
-        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn ok" type="submit" id="submitBtn" disabled>Submit Registration</button>
+        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn" id="submitBtn" type="submit" disabled>Submit Registration</button>
           <button class="btn secondary" type="button" id="resetBtn">Reset</button>
         </div>
       </form>
     </div>
 
-    <!-- RIGHT: Payment & QR -->
+    <!-- RIGHT -->
     <div class="card">
       <h1>Pay via UPI</h1>
-      <div class="copy">
+      <div style="display:flex; gap:10px; align-items:center;">
         <div class="muted">UPI ID:</div>
-        <div id="upiId" style="font-weight:700; margin-left:6px;">yashmani1996@okhdfcbank</div>
-        <button class="btn secondary" type="button" id="copyUpi" style="margin-left:auto">Copy</button>
+        <div style="font-weight:700;">yashmani1996@okhdfcbank</div>
+        <button class="btn secondary" id="copyUpi" type="button">Copy</button>
       </div>
 
       <div class="qrbox">
         <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
-
-        <!-- images are local in repo -->
-        <img id="qr8499" src="qr8499.png" alt="UPI QR ₹8499" />
-        <img id="qr6499" src="qr6499.png" alt="UPI QR ₹6499" style="display:none" />
-
+        <img id="qrImg" src="qr8499.png" alt="QR code">
         <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
       </div>
 
@@ -137,312 +125,220 @@
         <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
         <div class="line"><span>Payable now</span><span>₹ <span id="sidePay">8499</span></span></div>
       </div>
-
-      <div class="muted" style="margin-top:10px;">Tip: If your phone can’t scan the QR it’s because the QR is on the same phone — use another phone to scan.</div>
+      <div class="muted" style="margin-top:10px;">Tip: If your phone can’t scan the QR it's because the QR is on the same phone — use another phone to scan.</div>
     </div>
   </div>
 </div>
 
 <script>
-/* CONFIG - set your web app URL here (Apps Script Web App) */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzymHjYql5GpY5OeGlDyxKL0DWZYu1ff7phJ--d3lOcLADBBPLJd-H18B8Mx-X9m377/exec'; // replace if needed
-const UPI_ID = 'yashmani1996@okhdfcbank';
-const PAYEE_NAME = 'Yash Mani';
-const BASE_FEE = 8499;
-const DISC_FEE = 6499;
-const MAX_BYTES = 100 * 1024 * 1024; // 100MB
+  // ---------- CONFIG ----------
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzymHjYql5GpY5OeGlDyxKL0DWZYu1ff7phJ--d3lOcLADBBPLJd-H18B8Mx-X9m377/exec'; // <--- replace with your deployed URL if different
+  const BASE_FEE = 8499;
+  const DISC_FEE = 6499;
+  // hidden coupon set
+  const VALID_COUPONS = new Set(['AKSHAY2000','MELVIN2000','CHIRAG2000','YASSH2000','YASH2000','MANVI2000','AKANKSHA2000','YAHVI2000','JORDAN2000','NOEL2000','SANKET2000','LEONEL2000']);
 
-/* CLIENT-SIDE valid coupons (kept here so user sees immediate feedback).
-   The server still validates and will override client claims. */
-const VALID_COUPONS = new Set([
-  'AKSHAY2000','MELVIN2000','CHIRAG2000','YASSH2000','YASH2000','MANVI2000',
-  'AKANKSHA2000','YAHVI2000','JORDAN2000','NOEL2000','SANKET2000','LEONEL2000'
-]);
+  // QR image files must be next to this HTML: qr8499.png and qr6499.png
+  const QR_8499_SRC = 'qr8499.png';
+  const QR_6499_SRC = 'qr6499.png';
+  const UPI_ID = 'yashmani1996@okhdfcbank';
+  const PAYEE_NAME = 'Yash Mani';
 
-/* UI refs */
-const qr8499 = document.getElementById('qr8499');
-const qr6499 = document.getElementById('qr6499');
-const upiLink = document.getElementById('upiLink');
-const qrLabel = document.getElementById('qrLabel');
-const applyBtn = document.getElementById('applyBtn');
-const couponInput = document.getElementById('coupon');
-const couponStatus = document.getElementById('couponStatus');
+  // ---------- UI refs ----------
+  const form = document.getElementById('regForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const screenshotInput = document.getElementById('screenshot');
+  const fileStatus = document.getElementById('fileStatus');
+  const errMsg = document.getElementById('errMsg');
+  const okMsg = document.getElementById('okMsg');
 
-const totalFeeEl = document.getElementById('totalFee');
-const discountEl = document.getElementById('discountAmt');
-const payAmtEl   = document.getElementById('payAmt');
-const sidePayEl  = document.getElementById('sidePay');
-const appliedTag = document.getElementById('appliedTag');
+  const totalFeeEl = document.getElementById('totalFee');
+  const discountEl  = document.getElementById('discountAmt');
+  const payAmtEl    = document.getElementById('payAmt');
+  const sidePayEl   = document.getElementById('sidePay');
+  const appliedTag  = document.getElementById('appliedTag');
+  const qrLabel     = document.getElementById('qrLabel');
+  const qrImg       = document.getElementById('qrImg');
+  const upiLink     = document.getElementById('upiLink');
 
-const fileInput = document.getElementById('screenshot');
-const fileInfo = document.getElementById('fileInfo');
-const submitBtn = document.getElementById('submitBtn');
-const okMsg = document.getElementById('okMsg');
-const errMsg = document.getElementById('errMsg');
+  const applyBtn = document.getElementById('applyBtn');
 
-const copyUpiBtn = document.getElementById('copyUpi');
-const regForm = document.getElementById('regForm');
-const resetBtn = document.getElementById('resetBtn');
+  let fileBase64 = null;
+  let fileName = '';
+  let fileType = '';
+  let couponApplied = false;
 
-/* state */
-let couponApplied = false;
-let appliedCode = '';
-let uploadedFileBase64 = null;
-let uploadedFileName = '';
-let uploadedFileMime = '';
-let uploadedFileBytes = 0;
-
-/* initial setup */
-totalFeeEl.textContent = BASE_FEE;
-discountEl.textContent = '0';
-payAmtEl.textContent = BASE_FEE;
-sidePayEl.textContent = BASE_FEE;
-appliedTag.textContent = '—';
-
-/* UPI deep links (useful for "Open in UPI app" button) */
-const upi8499 = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
-const upi6499 = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${DISC_FEE}&cu=INR`;
-upiLink.href = upi8499;
-
-/* QR toggling helpers */
-function show8499QR(){
-  qr8499.style.display = '';
-  qr6499.style.display = 'none';
-  upiLink.href = upi8499;
-  qrLabel.textContent = 'Scan to pay ₹8499';
-  sidePayEl.textContent = BASE_FEE;
-}
-function show6499QR(){
-  qr8499.style.display = 'none';
-  qr6499.style.display = '';
-  upiLink.href = upi6499;
-  qrLabel.textContent = 'Scan to pay ₹6499';
-  sidePayEl.textContent = DISC_FEE;
-}
-show8499QR();
-
-/* small helpers for messages */
-function hideMsgs(){
-  okMsg.style.display = 'none';
-  errMsg.style.display = 'none';
-}
-function showOk(t){
-  okMsg.textContent = t;
-  okMsg.style.display = 'block';
-  errMsg.style.display = 'none';
-}
-function showError(t){
-  errMsg.textContent = t;
-  errMsg.style.display = 'block';
-  okMsg.style.display = 'none';
-}
-
-/* APPLY COUPON (client-side check + UI update) */
-applyBtn.addEventListener('click', () => {
-  hideMsgs();
-  const code = (couponInput.value || '').trim().toUpperCase();
-  if (!code) { couponStatus.textContent = 'Enter a coupon code.'; couponStatus.style.color = ''; return; }
-  if (VALID_COUPONS.has(code)) {
-    couponApplied = true;
-    appliedCode = code;
-    discountEl.textContent = String(BASE_FEE - DISC_FEE);
-    payAmtEl.textContent = DISC_FEE;
-    appliedTag.textContent = code;
-    couponStatus.textContent = 'Coupon applied.';
-    couponStatus.style.color = 'lightgreen';
-    show6499QR();
-  } else {
-    couponApplied = false;
-    appliedCode = '';
-    discountEl.textContent = '0';
-    payAmtEl.textContent = BASE_FEE;
-    appliedTag.textContent = '—';
-    couponStatus.textContent = 'Invalid coupon.';
-    couponStatus.style.color = 'tomato';
-    show8499QR();
-  }
-});
-
-/* COPY UPI ID */
-copyUpiBtn.addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(UPI_ID);
-    showOk('UPI ID copied to clipboard.');
-  } catch (e) {
-    showError('Could not copy UPI ID.');
-  }
-});
-
-/* FILE handling: require upload before submit; convert to base64 */
-fileInput.addEventListener('change', async (ev) => {
-  hideMsgs();
-  uploadedFileBase64 = null;
-  uploadedFileName = '';
-  uploadedFileMime = '';
-  uploadedFileBytes = 0;
-  submitBtn.disabled = true;
-  fileInfo.textContent = 'Processing file...';
-
-  const f = ev.target.files && ev.target.files[0];
-  if (!f) {
-    fileInfo.textContent = 'No file chosen';
-    return;
-  }
-
-  // Size check client-side
-  if (f.size > MAX_BYTES) {
-    fileInfo.textContent = '';
-    showError('File is too large. Please upload a file smaller than 100 MB.');
-    fileInput.value = '';
-    return;
-  }
-
-  // Read as data URL
-  try {
-    const { base64, mimeType } = await fileToBase64(f);
-    uploadedFileBase64 = base64;
-    uploadedFileName = f.name;
-    uploadedFileMime = mimeType || f.type || 'application/octet-stream';
-    uploadedFileBytes = Math.ceil(base64.length * 3/4); // approximate
-    fileInfo.textContent = `${uploadedFileName} (${Math.round(uploadedFileBytes/1024)} KB) — ready`;
-    submitBtn.disabled = false;
-    showOk('File processed. You can now submit.');
-  } catch (err) {
-    fileInfo.textContent = '';
-    showError('Could not read file. Try another file.');
-    console.error(err);
-    fileInput.value = '';
-  }
-});
-
-/* Convert file to base64 utility */
-function fileToBase64(file){
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result; // data:<mime>;base64,AAAA...
-      if (typeof dataUrl !== 'string') return reject(new Error('Invalid file read result'));
-      const parts = dataUrl.split(',');
-      if (parts.length !== 2) return reject(new Error('Unexpected dataURL format'));
-      const meta = parts[0]; // data:<mime>;base64
-      const base64 = parts[1];
-      const mimeMatch = meta.match(/data:([^;]+);base64/);
-      const mimeType = mimeMatch ? mimeMatch[1] : file.type || 'application/octet-stream';
-      resolve({ base64, mimeType });
-    };
-    reader.onerror = (e) => reject(e);
-    reader.readAsDataURL(file);
-  });
-}
-
-/* Reset */
-resetBtn.addEventListener('click', () => {
-  regForm.reset();
-  uploadedFileBase64 = null;
-  uploadedFileName = '';
-  uploadedFileMime = '';
-  uploadedFileBytes = 0;
-  fileInfo.textContent = 'No file chosen';
-  hideMsgs();
-  couponStatus.textContent = '';
-  appliedCode = '';
-  couponApplied = false;
-  appliedTag.textContent = '—';
+  // init
+  totalFeeEl.textContent = BASE_FEE;
   discountEl.textContent = '0';
   payAmtEl.textContent = BASE_FEE;
-  totalFeeEl.textContent = BASE_FEE;
-  show8499QR();
-  submitBtn.disabled = true;
-});
+  sidePayEl.textContent = BASE_FEE;
+  qrImg.src = QR_8499_SRC;
+  upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
 
-/* SUBMIT handler — sends JSON to Apps Script */
-regForm.addEventListener('submit', async (ev) => {
-  ev.preventDefault();
-  hideMsgs();
-
-  // Validate required fields
-  const name = (document.getElementById('name').value || '').trim();
-  const email = (document.getElementById('email').value || '').trim();
-  const phone = (document.getElementById('phone').value || '').trim();
-  const cop = (document.getElementById('cop').value || '').trim();
-
-  if (!name || !email || !phone || !cop) {
-    showError('Please fill required fields: name, email, phone and city of participation.');
-    return;
-  }
-
-  // ensure file uploaded
-  if (!uploadedFileBase64 || !uploadedFileName) {
-    showError('Please upload the payment screenshot (≤ 100 MB). Submission is blocked until upload finishes.');
-    return;
-  }
-
-  // Simple phone client check (10 digits minimum ignoring non-digits)
-  const digits = phone.replace(/\D/g,'');
-  if (digits.length < 10) {
-    showError('Phone must contain at least 10 digits.');
-    return;
-  }
-
-  // Prepare payload
-  const payload = {
-    name,
-    age: (document.getElementById('age').value || '').trim(),
-    currentCity: (document.getElementById('currentCity').value || '').trim(),
-    email,
-    phone,
-    cop,
-    insta: (document.getElementById('insta').value || '').trim(),
-    coupon: appliedCode || (document.getElementById('coupon').value || '').trim().toUpperCase(),
-    couponApplied: couponApplied,
-    finalAmountClient: couponApplied ? DISC_FEE : BASE_FEE,
-    // file fields
-    fileBase64: uploadedFileBase64,
-    fileName: uploadedFileName,
-    mimeType: uploadedFileMime
-  };
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting...';
-
-  try {
-    const res = await fetch(WEB_APP_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Server returned an error');
-    // success
-    showOk(`Submitted. Final amount recorded: ₹${data.finalAmount}.`);
-    // Optionally show drive link returned by server
-    if (data.driveLink) {
-      const link = data.driveLink;
-      okMsg.innerHTML += `<div style="margin-top:8px;"><a style="color:#bfe0ff" href="${link}" target="_blank" rel="noopener">View uploaded screenshot</a></div>`;
-    }
-    // clear file input and disable submit to avoid duplicate submission
-    fileInput.value = '';
-    uploadedFileBase64 = null;
+  // ---------- file handling ----------
+  screenshotInput.addEventListener('change', async (ev) => {
+    hideMsgs();
+    fileBase64 = null;
+    fileName = '';
+    fileType = '';
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitted';
-  } catch (err) {
-    console.error(err);
-    showError('Submission failed: ' + (err.message || 'unknown error'));
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Registration';
+    const f = ev.target.files && ev.target.files[0];
+    if (!f) {
+      fileStatus.textContent = '';
+      return;
+    }
+    // size check (100 MB)
+    const maxBytes = 100 * 1024 * 1024;
+    if (f.size > maxBytes) {
+      err('File is larger than 100 MB — please upload a smaller file.');
+      screenshotInput.value = '';
+      return;
+    }
+    fileName = f.name;
+    fileType = f.type || 'image/jpeg';
+    // read as data URL
+    try {
+      fileStatus.textContent = `${fileName} (${Math.round(f.size/1024)} KB) — processing...`;
+      const dataUrl = await readFileAsDataURL(f);
+      // dataUrl is like "data:image/png;base64,xxxx"
+      const comma = dataUrl.indexOf(',');
+      if (comma === -1) throw new Error('Invalid file read');
+      fileBase64 = dataUrl.substring(comma + 1);
+      fileStatus.textContent = `${fileName} (${Math.round(f.size/1024)} KB) — ready`;
+      submitBtn.disabled = false;
+    } catch (err) {
+      err('Failed to read file: ' + err.message);
+      screenshotInput.value = '';
+    }
+  });
+
+  function readFileAsDataURL(file){
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
   }
-});
 
-/* keep copy of UPI ID element in sync (in case you want to change) */
-document.getElementById('upiId').textContent = UPI_ID;
+  // ---------- coupon logic ----------
+  applyBtn.addEventListener('click', () => {
+    hideMsgs();
+    const raw = (document.getElementById('coupon').value || '').trim().toUpperCase();
+    if (!raw) { err('Enter a coupon to apply.'); return; }
+    if (VALID_COUPONS.has(raw)) {
+      couponApplied = true;
+      appliedTag.textContent = raw;
+      discountEl.textContent = String(BASE_FEE - DISC_FEE);
+      payAmtEl.textContent   = DISC_FEE;
+      sidePayEl.textContent  = DISC_FEE;
+      qrImg.src = QR_6499_SRC;
+      upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${DISC_FEE}&cu=INR`;
+      qrLabel.textContent = 'Scan to pay ₹6499';
+      ok('Coupon applied successfully.');
+    } else {
+      couponApplied = false;
+      appliedTag.textContent = '—';
+      discountEl.textContent = '0';
+      payAmtEl.textContent   = BASE_FEE;
+      sidePayEl.textContent  = BASE_FEE;
+      qrImg.src = QR_8499_SRC;
+      upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
+      qrLabel.textContent = 'Scan to pay ₹8499';
+      err('Invalid coupon code.');
+    }
+  });
 
-/* Accessibility: suppress default HTML validation UI on phone input mismatch
-   so our friendly message appears. We'll still rely on pattern/title for hint. */
-document.getElementById('phone').addEventListener('invalid', (e) => {
-  e.preventDefault();
-  showError('Phone number format looks incorrect — please enter 10-15 characters (digits, +, spaces or -).');
-});
+  // ---------- copy UPI ----------
+  document.getElementById('copyUpi').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(UPI_ID);
+      ok('UPI ID copied to clipboard.');
+    } catch (e) {
+      err('Could not copy UPI ID.');
+    }
+  });
 
+  // ---------- form submit ----------
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    hideMsgs();
+
+    // require file processed
+    if (!fileBase64) {
+      err('Please upload the payment screenshot before submitting.');
+      return;
+    }
+
+    // collect form values
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      age: document.getElementById('age').value.trim(),
+      currentCity: document.getElementById('currentCity').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      participationCity: document.getElementById('cop').value,
+      insta: document.getElementById('insta').value.trim(),
+      couponCode: (document.getElementById('coupon').value || '').trim().toUpperCase(),
+      couponApplied: !!couponApplied,
+      finalAmountClient: couponApplied ? DISC_FEE : BASE_FEE,
+      fileBase64: fileBase64,
+      fileName: fileName,
+      fileType: fileType
+    };
+
+    // Basic client validation
+    if (!payload.name || !payload.email || !payload.participationCity) {
+      err('Please fill name, email and choose participation city.');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    fileStatus.textContent = 'Uploading…';
+
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'Unknown server error');
+      ok(`Submitted. Final Amount: ₹${data.finalAmount}`);
+      // optionally clear file field, keep a link or store returned fileUrl
+      fileStatus.innerHTML = data.fileUrl ? `Uploaded: <a href="${data.fileUrl}" target="_blank">Open file</a>` : 'No file saved';
+      submitBtn.disabled = false;
+    } catch (e) {
+      err('Submission failed: ' + e.message);
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---------- reset ----------
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    form.reset();
+    fileBase64 = null; fileName = ''; fileType = '';
+    fileStatus.textContent = '';
+    hideMsgs();
+    submitBtn.disabled = true;
+    couponApplied = false;
+    appliedTag.textContent = '—';
+    discountEl.textContent = '0';
+    payAmtEl.textContent = BASE_FEE;
+    sidePayEl.textContent = BASE_FEE;
+    qrImg.src = QR_8499_SRC;
+    qrLabel.textContent = 'Scan to pay ₹8499';
+    upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
+  });
+
+  // helpers
+  function hideMsgs(){
+    errMsg.style.display = 'none'; okMsg.style.display = 'none';
+    errMsg.textContent = ''; okMsg.textContent = '';
+  }
+  function err(t){ errMsg.style.display = 'block'; errMsg.textContent = t; okMsg.style.display = 'none'; }
+  function ok(t){ okMsg.style.display = 'block'; okMsg.textContent = t; errMsg.style.display = 'none'; }
 </script>
 </body>
 </html>
