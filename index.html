@@ -36,7 +36,7 @@
     <!-- LEFT -->
     <div class="card">
       <h1>Artist League Camp 2025 — Registration</h1>
-      <form id="regForm">
+      <form id="regForm" novalidate>
         <div class="row">
           <div>
             <label for="name">Name</label>
@@ -62,9 +62,8 @@
         <div class="row">
           <div>
             <label for="phone">Phone</label>
-            <!-- Accept Indian numbers: optional +91, digits start 6-9 -->
+            <!-- no pattern attribute — we'll validate in JS -->
             <input id="phone" name="phone" type="tel" inputmode="tel"
-                   pattern="^(\+91[\-\s]?)?[6-9]\d{9}$"
                    placeholder="10-digit mobile (or +91 9xxxxxxxxx)"
                    required />
           </div>
@@ -83,11 +82,11 @@
 
         <label>Coupon Code (optional)</label>
         <div class="coupon-bar">
-          <input id="coupon" name="coupon" placeholder="e.g. YASH2000" />
+          <!-- NO example placeholder and no visible coupon list -->
+          <input id="coupon" name="coupon" placeholder="" autocomplete="off" />
           <button class="btn" type="button" id="applyBtn">Apply</button>
         </div>
-        <!-- we intentionally DO NOT show the coupon list on the page (secret) -->
-        <div class="small" id="couponHint" style="display:none">Coupon applied ✓</div>
+        <div class="small" id="couponHint" style="display:none">Coupon applied</div>
 
         <div class="calc" id="calcBox">
           <div class="line"><span>Total fee</span><span>₹ <span id="totalFee">8499</span></span></div>
@@ -102,7 +101,7 @@
         <div class="okmsg" id="okMsg" style="display:none;"></div>
         <div class="errmsg" id="errMsg" style="display:none;"></div>
 
-        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn ok" id="submitBtn" type="submit" disabled>Submit Registration</button>
           <button class="btn secondary" type="button" id="resetBtn">Reset</button>
         </div>
@@ -121,7 +120,7 @@
       <div class="qrbox">
         <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
 
-        <!-- use your repo-hosted images: qr8499.png and qr6499.png -->
+        <!-- local images must exist in same folder as this HTML -->
         <img id="qr8499" src="qr8499.png" alt="UPI QR 8499">
         <img id="qr6499" src="qr6499.png" alt="UPI QR 6499" style="display:none;">
 
@@ -138,20 +137,22 @@
 </div>
 
 <script>
-/* CONFIG */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzymHjYql5GpY5OeGlDyxKL0DWZYu1ff7phJ--d3lOcLADBBPLJd-H18B8Mx-X9m377/exec'; // set to Apps Script web app URL
+/* ========== CONFIG ==========
+Paste your deployed Apps Script Web App URL here (the "web app URL" you get from Deploy)
+*/
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzymHjYql5GpY5OeGlDyxKL0DWZYu1ff7phJ--d3lOcLADBBPLJd-H18B8Mx-X9m377/exec';
 const UPI_ID = 'yashmani1996@okhdfcbank';
 const PAYEE_NAME = 'Yash Mani';
 const BASE_FEE = 8499;
 const DISC_FEE = 6499;
 
-// secret list — not shown on page
+// secret coupon list — NOT shown on web page
 const VALID_COUPONS = new Set([
   'AKSHAY2000','MELVIN2000','CHIRAG2000','YASSH2000','YASH2000','MANVI2000',
   'AKANKSHA2000','YAHVI2000','JORDAN2000','NOEL2000','SANKET2000','LEONEL2000'
 ]);
 
-/* UI refs */
+/* ========== UI refs ========== */
 const img8499 = document.getElementById('qr8499');
 const img6499 = document.getElementById('qr6499');
 const upiLink = document.getElementById('upiLink');
@@ -161,7 +162,7 @@ const discountEl = document.getElementById('discountAmt');
 const payAmtEl = document.getElementById('payAmt');
 const sidePayEl = document.getElementById('sidePay');
 const appliedTag = document.getElementById('appliedTag');
-const appliedHint = document.getElementById('couponHint');
+const couponHint = document.getElementById('couponHint');
 const fileStatus = document.getElementById('fileStatus');
 const submitBtn = document.getElementById('submitBtn');
 const okMsg = document.getElementById('okMsg');
@@ -173,43 +174,37 @@ let screenshotBase64 = null;
 let screenshotName = null;
 let screenshotMime = null;
 
-/* init */
+/* initial */
 totalFeeEl.textContent = BASE_FEE;
 discountEl.textContent = '0';
 payAmtEl.textContent = BASE_FEE;
 sidePayEl.textContent = BASE_FEE;
 upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
 
-/* phone & file handling */
-
-/* File input processing: convert to data URL (base64) and validate size <= 100 MB */
+/* handle file input: validate size <= 100MB, convert to base64 */
 document.getElementById('screenshot').addEventListener('change', async (ev) => {
   hideMsgs();
-  screenshotBase64 = null;
-  screenshotName = null;
-  screenshotMime = null;
+  screenshotBase64 = null; screenshotName = null; screenshotMime = null;
   submitBtn.disabled = true;
-
   const f = ev.target.files && ev.target.files[0];
   if (!f) { fileStatus.textContent = ''; return; }
-  const maxBytes = 100 * 1024 * 1024; // 100 MB
+  const maxBytes = 100 * 1024 * 1024;
   if (f.size > maxBytes) {
-    fileStatus.innerHTML = `File too large (${(f.size/1024/1024).toFixed(1)} MB). Please upload ≤ 100 MB.`;
-    errMsg.style.display='block'; errMsg.textContent = 'Upload failed: file too large.';
+    fileStatus.textContent = `File too large (${(f.size/1024/1024).toFixed(1)} MB). Please upload ≤ 100 MB.`;
+    showError('Upload failed: file too large.');
     return;
   }
-
   fileStatus.textContent = `${f.name} (${(f.size/1024).toFixed(0)} KB) — processing...`;
   try {
-    const dataUrl = await fileToDataURL(f); // returns data:image/...;base64,...
-    screenshotBase64 = dataUrl.split(',')[1]; // base64 part only
+    const dataUrl = await fileToDataURL(f);
+    screenshotBase64 = dataUrl.split(',')[1];
     screenshotName = f.name;
     screenshotMime = f.type || 'application/octet-stream';
     fileStatus.textContent = `${f.name} (${(f.size/1024).toFixed(0)} KB) — ready`;
     submitBtn.disabled = false;
   } catch (err) {
     fileStatus.textContent = 'Failed to read file.';
-    errMsg.style.display='block'; errMsg.textContent = 'Upload failed: unable to read file.';
+    showError('Upload failed: unable to read file.');
   }
 });
 
@@ -222,7 +217,7 @@ function fileToDataURL(file){
   });
 }
 
-/* Coupon apply */
+/* Apply coupon (client-side) */
 document.getElementById('applyBtn').addEventListener('click', () => {
   hideMsgs();
   const code = (document.getElementById('coupon').value || '').trim().toUpperCase();
@@ -233,13 +228,12 @@ document.getElementById('applyBtn').addEventListener('click', () => {
     payAmtEl.textContent = DISC_FEE;
     sidePayEl.textContent = DISC_FEE;
     appliedTag.textContent = code;
-    // swap QR
     img8499.style.display = 'none';
     img6499.style.display = 'block';
     upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${DISC_FEE}&cu=INR`;
     qrLabel.textContent = 'Scan to pay ₹' + DISC_FEE;
-    appliedHint.style.display = 'block';
-    appliedHint.textContent = 'Coupon applied';
+    couponHint.style.display = 'block';
+    couponHint.textContent = 'Coupon applied';
     showOk('Coupon applied successfully.');
   } else {
     couponApplied = false; appliedCode = '';
@@ -251,20 +245,18 @@ document.getElementById('applyBtn').addEventListener('click', () => {
     img6499.style.display = 'none';
     upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
     qrLabel.textContent = 'Scan to pay ₹' + BASE_FEE;
-    appliedHint.style.display = 'none';
+    couponHint.style.display = 'none';
     showError('Invalid coupon code.');
   }
 });
 
-/* Copy UPI */
+/* copy UPI */
 document.getElementById('copyUpi').addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(UPI_ID);
-    showOk('UPI ID copied.');
-  } catch (e) { showError('Could not copy UPI ID.'); }
+  try { await navigator.clipboard.writeText(UPI_ID); showOk('UPI ID copied.'); }
+  catch(e){ showError('Could not copy UPI ID.'); }
 });
 
-/* Reset */
+/* reset */
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('regForm').reset();
   couponApplied=false; appliedCode='';
@@ -283,36 +275,34 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   hideMsgs();
 });
 
-/* Submit -- send JSON payload with base64 screenshot */
+/* submit: sends JSON string with content-type text/plain to avoid preflight */
 document.getElementById('regForm').addEventListener('submit', async (ev) => {
   ev.preventDefault();
   hideMsgs();
 
-  // ensure file ready
   if (!screenshotBase64 || !screenshotName) {
     showError('Please upload the payment screenshot before submitting.');
     return;
   }
 
-  // validate phone pattern using the same regex
-  const phoneEl = document.getElementById('phone');
+  // JS phone validation (Indian numbers)
+  const phoneVal = (document.getElementById('phone').value || '').trim();
   const phonePattern = /^(\+91[\-\s]?)?[6-9]\d{9}$/;
-  if (!phonePattern.test(phoneEl.value.trim())) {
+  if (!phonePattern.test(phoneVal)) {
     showError('Please enter a valid Indian mobile number (10 digits, or +91...).');
-    phoneEl.focus();
+    document.getElementById('phone').focus();
     return;
   }
 
   submitBtn.disabled = true;
   submitBtn.textContent = 'Submitting...';
 
-  // collect fields
   const payload = {
     name: (document.getElementById('name').value || '').trim(),
     age: (document.getElementById('age').value || '').trim(),
     currentCity: (document.getElementById('currentCity').value || '').trim(),
     email: (document.getElementById('email').value || '').trim(),
-    phone: (document.getElementById('phone').value || '').trim(),
+    phone: phoneVal,
     instagram: (document.getElementById('insta').value || '').trim(),
     participationCity: (document.getElementById('cop').value || '').trim(),
     coupon: appliedCode || '',
@@ -323,27 +313,34 @@ document.getElementById('regForm').addEventListener('submit', async (ev) => {
   };
 
   try {
+    if (!WEB_APP_URL || WEB_APP_URL.indexOf('http') !== 0) {
+      throw new Error('Missing or invalid WEB_APP_URL in HTML. Paste your Apps Script web app URL into the script.');
+    }
     const res = await fetch(WEB_APP_URL, {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      headers: {'Content-Type':'text/plain'}, // intentionally text/plain to avoid preflight
       body: JSON.stringify(payload)
     });
+
+    // parse response (Apps Script returns JSON)
     const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Unknown server error');
-    showOk(`Submitted. Final Amount: ₹${data.finalAmount}`);
-    // clear screenshot field
+    if (!data.ok) throw new Error(data.error || 'Server returned error');
+
+    showOk(`Submitted. Final Amount: ₹${data.finalAmount || payload.finalAmountClient}`);
+    // clear file input
     document.getElementById('screenshot').value = '';
     fileStatus.textContent = '';
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Registration';
   } catch (err) {
+    // most common errors: network, CORS/preflight, incorrect web app URL or permissions
     showError('Submission failed: ' + (err.message || err));
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Registration';
   }
 });
 
-/* helper UI functions */
+/* utility UI */
 function showOk(t){ okMsg.style.display='block'; okMsg.textContent=t; errMsg.style.display='none'; }
 function showError(t){ errMsg.style.display='block'; errMsg.textContent=t; okMsg.style.display='none'; }
 function hideMsgs(){ okMsg.style.display='none'; errMsg.style.display='none'; }
