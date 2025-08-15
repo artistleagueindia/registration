@@ -80,10 +80,9 @@
 
         <label>Coupon Code (optional)</label>
         <div class="coupon-bar">
-          <input id="coupon" name="coupon" placeholder="e.g. YASH2000" />
+          <input id="coupon" name="coupon" placeholder="Coupon code" autocomplete="off" />
           <button class="btn" type="button" id="applyBtn">Apply</button>
         </div>
-        <div class="muted">Valid coupons: AKSHAY2000, MELVIN2000, CHIRAG2000, YASSH2000, YASH2000, MANVI2000, AKANKSHA2000, YAHVI2000, JORDAN2000, NOEL2000, SANKET2000, LEONEL2000</div>
 
         <div class="calc" id="calcBox">
           <div class="line"><span>Total fee</span><span>₹ <span id="totalFee">8499</span></span></div>
@@ -104,7 +103,7 @@
       </form>
     </div>
 
-    <!-- RIGHT: Payment box with static QRs -->
+    <!-- RIGHT: Payment box with static local QRs -->
     <div class="card">
       <h1>Pay via UPI</h1>
       <div class="copy">
@@ -114,17 +113,12 @@
       </div>
 
       <div class="qrbox">
-  <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
-
-  <!-- Default QR for 8499 -->
-  <img id="qr8499" src="qr8499.png" alt="UPI QR 8499">
-
-  <!-- Discounted QR for 6499 (hidden initially) -->
-  <img id="qr6499" src="qr6499.png" alt="UPI QR 6499" style="display:none;">
-
-  <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
-</div>
-
+        <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
+        <!-- Local static images -->
+        <img id="qr8499" src="qr8499.png" alt="UPI QR 8499">
+        <img id="qr6499" src="qr6499.png" alt="UPI QR 6499" style="display:none;">
+        <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
+      </div>
 
       <div class="calc" style="margin-top:16px;">
         <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
@@ -142,87 +136,99 @@
   const PAYEE_NAME  = 'Yash Mani'; // label in deep link
   const BASE_FEE    = 8499;
   const DISC_FEE    = 6499;
-  const VALID_COUPONS = new Set(['AKSHAY2000','MELVIN2000','CHIRAG2000','YASSH2000','YASH2000','MANVI2000','AKANKSHA2000','YAHVI2000','JORDAN2000','NOEL2000','SANKET2000','LEONEL2000']);
 
- 
-  // Generate QR image URLs (static amounts)
-  <!-- Direct QR image for ₹8499 -->
-<img id="qr8499" src="qr8499.png" 
-     alt="QR Code ₹8499" style="width:280px; height:280px;">
+  // ====== Hidden coupon codes (Base64) ======
+  const encodedCoupons = [
+    "QUtTSEFZMjAwMA==","TUVMVklOMjAwMA==","Q0hJUkFHMjAwMA==","WUFTU0gyMDAw","WUFTSDIwMDA=",
+    "TUFOVkkxMDAw","QUtBTktTSEEyMDAw","WUFIVkkxMDAw","Sk9SREFOMjAwMA==","Tk9FTDIwMDA=",
+    "U0FOS0VUMjAwMA==","TEVPTkVMMjAwMA=="
+  ].map(c => atob(c).toUpperCase()); // store uppercased for comparison
 
-<!-- Direct QR image for ₹6499 (hidden initially) -->
-<img id="qr6499" src="qr6499.png" 
-     alt="QR Code ₹6499" style="width:280px; height:280px; display:none;">
+  // ====== Build UPI deep-links (so the button opens the right amount) ======
+  const upiDeepLink = (amt) =>
+    `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amt}&cu=INR`;
 
+  // ====== UI refs ======
+  const totalFeeEl = document.getElementById('totalFee');
+  const discountEl = document.getElementById('discountAmt');
+  const payAmtEl   = document.getElementById('payAmt');
+  const sidePayEl  = document.getElementById('sidePay');
+  const appliedTag = document.getElementById('appliedTag');
+  const qrLabel    = document.getElementById('qrLabel');
+  const img8499    = document.getElementById('qr8499');
+  const img6499    = document.getElementById('qr6499');
+  const upiLink    = document.getElementById('upiLink');
+  const couponInput = document.getElementById('coupon');
 
-  // init QR images and link
-const img8499 = document.getElementById('qr8499');
-const img6499 = document.getElementById('qr6499');
-
-// Show ₹8499 QR by default
-img8499.style.display = 'block';
-img6499.style.display = 'none';
-
-// Example: swap to ₹6499 QR when coupon applied
-function show6499QR() {
-    img8499.style.display = 'none';
-    img6499.style.display = 'block';
-}
-
-
-
-  // UI refs
-const totalFeeEl = document.getElementById('totalFee');
-const discountEl = document.getElementById('discountAmt');
-const payAmtEl   = document.getElementById('payAmt');
-const sidePayEl  = document.getElementById('sidePay');
-const appliedTag = document.getElementById('appliedTag');
-const qrLabel    = document.getElementById('qrLabel');
-const qr8499El   = document.getElementById('qr8499');
-const qr6499El   = document.getElementById('qr6499');
-
-
+  // defaults
   let couponApplied = false;
   let appliedCode   = '';
+  upiLink.href = upiDeepLink(BASE_FEE);
 
+  // ====== Helpers ======
+  function hideMsgs(){
+    document.getElementById('okMsg').style.display='none';
+    document.getElementById('errMsg').style.display='none';
+  }
+  function showOk(t){
+    const el=document.getElementById('okMsg'); el.textContent=t; el.style.display='block';
+    document.getElementById('errMsg').style.display='none';
+  }
+  function showError(t){
+    const el=document.getElementById('errMsg'); el.textContent=t; el.style.display='block';
+    document.getElementById('okMsg').style.display='none';
+  }
+
+  function setAmount(amt) {
+    const discount = Math.max(0, BASE_FEE - amt);
+    totalFeeEl.textContent = BASE_FEE.toString();
+    discountEl.textContent = discount.toString();
+    payAmtEl.textContent   = amt.toString();
+    sidePayEl.textContent  = amt.toString();
+    upiLink.href = upiDeepLink(amt);
+  }
+
+  // ====== Coupon apply logic ======
   function applyCoupon() {
-    const code = (document.getElementById('coupon').value || '').trim().toUpperCase();
-    if (!code) {
+    const code = (couponInput.value || '').trim().toUpperCase();
+    if (!code){
       showError('Enter a coupon code to apply.');
       return;
     }
-    if (VALID_COUPONS.has(code)) {
+    if (encodedCoupons.includes(code)) {
       couponApplied = true; appliedCode = code;
-      totalFeeEl.textContent = BASE_FEE;
-      discountEl.textContent = (BASE_FEE - DISC_FEE).toString();
-      payAmtEl.textContent   = DISC_FEE;
-      sidePayEl.textContent  = DISC_FEE;
-      appliedTag.textContent = code;
+      setAmount(DISC_FEE);
 
-      // Switch to 6499 QR + deep link
-      qr8499El.style.display = 'none';
-    qr6499El.style.display = 'block';
-      document.getElementById('qrImage').src = 'qr6499.png';;
-      qrLabel.textContent = 'Scan to pay ₹6499';
+      // Swap QR + label
+      img8499.style.display = 'none';
+      img6499.style.display = '';
+      qrLabel.textContent = 'Scan to pay ₹' + DISC_FEE;
+
+      appliedTag.textContent = code;
       showOk('Coupon applied successfully.');
     } else {
+      // revert to base fee
       couponApplied = false; appliedCode = '';
-      totalFeeEl.textContent = BASE_FEE;
-      discountEl.textContent = '0';
-      payAmtEl.textContent   = BASE_FEE;
-      sidePayEl.textContent  = BASE_FEE;
-      appliedTag.textContent = '—';
+      setAmount(BASE_FEE);
 
-      // Back to 8499 QR
-      qr8499El.style.display = 'block';
-    qr6499El.style.display = 'none';
-      document.getElementById('qrImage').src = 'qr8499.png';;
-      qrLabel.textContent = 'Scan to pay ₹8499';
+      img8499.style.display = '';
+      img6499.style.display = 'none';
+      qrLabel.textContent = 'Scan to pay ₹' + BASE_FEE;
+
+      appliedTag.textContent = '—';
       showError('Invalid coupon code.');
     }
   }
 
   document.getElementById('applyBtn').addEventListener('click', applyCoupon);
+
+  // Apply coupon when pressing Enter inside the coupon box (and block form submit)
+  couponInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      applyCoupon();
+    }
+  });
 
   // Copy UPI
   document.getElementById('copyUpi').addEventListener('click', async () => {
@@ -236,47 +242,49 @@ const qr6499El   = document.getElementById('qr6499');
   document.getElementById('resetBtn').addEventListener('click', () => {
     document.getElementById('regForm').reset();
     couponApplied = false; appliedCode = '';
-    totalFeeEl.textContent = BASE_FEE;
-    discountEl.textContent = '0';
-    payAmtEl.textContent   = BASE_FEE;
-    sidePayEl.textContent  = BASE_FEE;
+    setAmount(BASE_FEE);
     appliedTag.textContent = '—';
     img8499.style.display = '';
     img6499.style.display = 'none';
-    document.getElementById('qrImage').src = 'qr8499.png';;
-    qrLabel.textContent = 'Scan to pay ₹8499';
+    qrLabel.textContent = 'Scan to pay ₹' + BASE_FEE;
     hideMsgs();
   });
 
-  // Submit to Apps Script
+  // ====== Submit to Apps Script (mail + sheet handled on backend) ======
   document.getElementById('regForm').addEventListener('submit', async (ev) => {
     ev.preventDefault();
     hideMsgs();
 
     const fd = new FormData(ev.target);
-    // lock in the amount calculated on the client (also recalculated on server from coupon)
+    // Lock the amount that user saw on the client
     fd.append('finalAmountClient', couponApplied ? DISC_FEE : BASE_FEE);
+    fd.append('couponApplied', couponApplied ? 'true' : 'false');
+    fd.append('couponCode', appliedCode);
+    fd.append('upiId', UPI_ID);
+    fd.append('payeeName', PAYEE_NAME);
+    // These flags/fields can be used by your Apps Script to trigger email + sheet writes
+    fd.append('notifyEmail', 'true');
+    fd.append('sheetWrite', 'true');
+    fd.append('eventName', 'Artist League Camp 2025');
 
     try {
       const res = await fetch(WEB_APP_URL, { method:'POST', body:fd });
       const data = await res.json();
       if (!data.ok) throw new Error(data.error || 'Unknown error');
 
-      const msg = `Submitted. Coupon: ${data.couponValid ? 'valid' : 'not applied'} · Final Amount: ₹${data.finalAmount}`;
+      const msg = `Submitted. Coupon: ${data.couponValid ? 'valid' : (couponApplied ? 'invalid (server)' : 'not applied')} · Final Amount: ₹${data.finalAmount}`;
       showOk(msg);
-      // Optionally clear file only
+
+      // Optionally clear just the file input so user can upload another proof
       document.getElementById('screenshot').value = '';
     } catch (e) {
       showError('Submission failed: ' + e.message);
     }
   });
 
-  function hideMsgs(){
-    document.getElementById('okMsg').style.display='none';
-    document.getElementById('errMsg').style.display='none';
-  }
-  function showOk(t){ const el=document.getElementById('okMsg'); el.textContent=t; el.style.display='block'; document.getElementById('errMsg').style.display='none'; }
-  function showError(t){ const el=document.getElementById('errMsg'); el.textContent=t; el.style.display='block'; document.getElementById('okMsg').style.display='none'; }
+  // Ensure initial deep link is correct on load
+  setAmount(BASE_FEE);
 </script>
 </body>
 </html>
+
