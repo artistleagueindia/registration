@@ -1,358 +1,368 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Artist League Camp 2025 — Registration</title>
-<style>
-:root{--bg:#0b0b10;--card:#141420;--text:#f5f7ff;--muted:#a8acc3;--accent:#5b8cff;--ok:#1db954;--warn:#ffb020;}
-body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text);}
-.wrap{max-width:980px;margin:24px auto;padding:16px;}
-.grid{display:grid;grid-template-columns:1fr 360px;gap:18px;}
-.card{background:var(--card);border-radius:16px;padding:18px;}
-h1{font-size:22px;margin:0 0 10px;}
-label{display:block;font-size:14px;margin:8px 0 6px;color:var(--muted);}
-input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2a3a;background:#10101a;color:var(--text);}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
-.btn{padding:10px 14px;border:0;border-radius:10px;cursor:pointer;color:#fff;background:var(--accent);}
-.btn.secondary{background:#2a2a3a;}
-.btn.ok{background:var(--ok);}
-.muted{color:var(--muted);font-size:12px;}
-.calc{background:#0f1320;border:1px solid #2a314b;border-radius:12px;padding:12px;margin-top:12px;}
-.calc .line{display:flex;justify-content:space-between;margin:6px 0;}
-.calc .total{font-weight:700;font-size:18px;}
-.qrbox{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:12px;}
-.qrbox img{width:220px;height:220px;border-radius:12px;background:#fff;}
-.okmsg{margin-top:12px;padding:10px;border-radius:10px;background:#0f1f14;border:1px solid #1e7d3b;}
-.errmsg{margin-top:12px;padding:10px;border-radius:10px;background:#2a1414;border:1px solid #7d1e1e;}
-.file-meta{font-size:13px;color:var(--muted);margin-top:8px;}
-@media(max-width:940px){.grid{grid-template-columns:1fr;} .row{grid-template-columns:1fr;}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Artist League Camp 2025 — Registration</title>
+  <style>
+    /* (abridged styling — keep what you used earlier) */
+    :root{--bg:#0b0b10;--card:#141420;--text:#f5f7ff;--muted:#a8acc3;--accent:#5b8cff;--ok:#1db954;--warn:#ffb020}
+    body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text)}
+    .wrap{max-width:980px;margin:24px auto;padding:18px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px}
+    .card{background:var(--card);border-radius:14px;padding:18px}
+    label{display:block;color:var(--muted);margin-bottom:6px}
+    input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #2a2a3a;background:#10101a;color:var(--text)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+    .btn{padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    .calc{background:#0f1320;border:1px solid #2a314b;border-radius:12px;padding:14px;margin-top:12px}
+    .calc .line{display:flex;justify-content:space-between;margin:6px 0}
+    .okmsg{margin-top:12px;padding:10px;border-radius:10px;background:#0f1f14;border:1px solid #1e7d3b}
+    .errmsg{margin-top:12px;padding:10px;border-radius:10px;background:#2a1414;border:1px solid #7d1e1e}
+    .qrbox img{width:240px;height:240px;border-radius:12px;background:#fff;display:block}
+    .file-info{margin-top:8px;color:var(--muted);font-size:13px}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="grid">
-    <!-- LEFT -->
-    <div class="card">
-      <h1>Artist League Camp 2025 — Registration</h1>
-      <form id="regForm" autocomplete="on">
-        <div class="row">
-          <div>
-            <label for="name">Name</label>
-            <input id="name" name="name" required />
-          </div>
-          <div>
-            <label for="age">Age</label>
-            <input id="age" name="age" type="number" min="5" max="99" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label for="currentCity">Current City</label>
-            <input id="currentCity" name="currentCity" placeholder="Your city" />
-          </div>
-          <div>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required />
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label for="phone">Phone</label>
-            <!-- Use only digits, inputmode=tel and pattern to satisfy mobile autofill -->
-            <input id="phone" name="phone" inputmode="tel" pattern="[0-9]{10,}" title="Enter only digits, at least 10" placeholder="10+ digits" required />
-          </div>
-          <div>
-            <label for="insta">Instagram Profile Link</label>
-            <input id="insta" name="insta" placeholder="https://instagram.com/…" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label for="cop">City of Participation</label>
-            <select id="cop" name="cop" required>
-              <option value="">Choose…</option>
-              <option>Mumbai</option>
-              <option>Pune</option>
-            </select>
-          </div>
-          <div>
-            <label for="coupon">Coupon Code (optional)</label>
-            <div style="display:flex;gap:8px;">
-              <input id="coupon" name="coupon" placeholder="Enter coupon code" />
-              <button class="btn" type="button" id="applyBtn">Apply</button>
+  <div class="wrap">
+    <div class="grid">
+      <!-- LEFT: FORM -->
+      <div class="card">
+        <h2>Artist League Camp 2025 — Registration</h2>
+        <form id="regForm">
+          <div class="row">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" required />
+            </div>
+            <div>
+              <label for="age">Age</label>
+              <input id="age" name="age" type="number" min="5" max="99" required />
             </div>
           </div>
-        </div>
 
-        <div class="calc" id="calcBox">
-          <div class="line"><span>Total fee</span><span>₹ <span id="totalFee">8499</span></span></div>
-          <div class="line"><span>Discount</span><span>- ₹ <span id="discountAmt">0</span></span></div>
-          <div class="line total"><span>Amount payable</span><span>₹ <span id="payAmt">8499</span></span></div>
-        </div>
+          <div class="row">
+            <div>
+              <label for="currentCity">Current City</label>
+              <input id="currentCity" name="currentCity" placeholder="City you live in" />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+          </div>
 
-        <label for="screenshot">Upload Payment Screenshot (required — ≤ 100 MB)</label>
-        <input id="screenshot" name="screenshot" type="file" accept="image/*,application/pdf" required />
-        <div id="fileMeta" class="file-meta">No file chosen</div>
+          <div class="row">
+            <div>
+              <label for="phone">Phone</label>
+              <!-- use type=tel + pattern to avoid iOS autoformat validation message -->
+              <input id="phone" name="phone" type="tel" inputmode="tel" pattern="^\\d{10,}$" placeholder="10+ digits, numbers only" required />
+            </div>
+            <div>
+              <label for="insta">Instagram Profile Link</label>
+              <input id="insta" name="insta" placeholder="https://instagram.com/..." />
+            </div>
+          </div>
 
-        <div class="errmsg" id="errMsg" style="display:none;"></div>
-        <div class="okmsg" id="okMsg" style="display:none;"></div>
+          <div class="row">
+            <div>
+              <label for="participationCity">City of Participation</label>
+              <select id="participationCity" name="participationCity" required>
+                <option value="">Choose…</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Pune">Pune</option>
+              </select>
+            </div>
 
-        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn ok" id="submitBtn" type="submit" disabled>Submit Registration</button>
-          <button class="btn secondary" type="button" id="resetBtn">Reset</button>
-        </div>
-      </form>
-    </div>
+            <div>
+              <label for="coupon">Coupon Code (optional)</label>
+              <!-- do NOT show the coupon examples in UI; keep placeholder minimal -->
+              <input id="coupon" name="coupon" placeholder="Enter coupon (if any)" />
+            </div>
+          </div>
 
-    <!-- RIGHT -->
-    <div class="card">
-      <h1>Pay via UPI</h1>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="muted">UPI ID:</div>
-        <div id="upiId" style="font-weight:700;">yashmani1996@okhdfcbank</div>
-        <button class="btn secondary" type="button" id="copyUpi">Copy</button>
+          <div class="calc" id="calcBox">
+            <div class="line"><span>Total fee</span><span>₹ <span id="totalFee">8499</span></span></div>
+            <div class="line"><span>Discount</span><span>- ₹ <span id="discountAmt">0</span></span></div>
+            <div class="line" style="font-weight:700;"><span>Amount payable</span><span>₹ <span id="payAmt">8499</span></span></div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label for="screenshot">Upload Payment Screenshot (required — ≤ 100 MB)</label>
+            <input id="screenshot" name="screenshot" type="file" accept="image/*,application/pdf" />
+            <div class="file-info" id="fileInfo">No file chosen</div>
+            <div class="muted" id="fileWarn" style="display:none;color:var(--warn)"></div>
+          </div>
+
+          <div id="okMsg" class="okmsg" style="display:none;"></div>
+          <div id="errMsg" class="errmsg" style="display:none;"></div>
+
+          <div style="margin-top:16px; display:flex; gap:10px;">
+            <button id="submitBtn" class="btn ok" type="submit" style="background:#2b9f59">Submit Registration</button>
+            <button id="resetBtn" class="btn" type="button" style="background:#2a2a2a">Reset</button>
+          </div>
+        </form>
       </div>
 
-      <div class="qrbox">
-        <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
-        <!-- images assumed to be hosted alongside this HTML -->
-        <img id="qr8499" src="qr8499.png" alt="QR 8499">
-        <img id="qr6499" src="qr6499.png" alt="QR 6499" style="display:none;">
-        <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
-      </div>
+      <!-- RIGHT: PAYMENT/QR -->
+      <div class="card">
+        <h2>Pay via UPI</h2>
+        <div class="muted">UPI ID: <strong id="upiId">yashmani1996@okhdfcbank</strong></div>
+        <div class="qrbox" style="margin-top:12px; text-align:center;">
+          <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
+          <img id="qr8499" src="qr8499.png" alt="UPI QR 8499">
+          <img id="qr6499" src="qr6499.png" alt="UPI QR 6499" style="display:none;">
+          <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener" style="margin-top:12px; display:inline-block">Open in UPI app</a>
+        </div>
 
-      <div class="calc" style="margin-top:16px;">
-        <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
-        <div class="line"><span>Payable now</span><span>₹ <span id="sidePay">8499</span></span></div>
+        <div class="calc" style="margin-top:18px;">
+          <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
+          <div class="line"><span>Payable now</span><span>₹ <span id="sidePay">8499</span></span></div>
+        </div>
       </div>
-      <div class="muted" style="margin-top:10px;">Tip: If your phone can’t scan the QR it’s because the QR is on the same phone — use another phone to scan.</div>
     </div>
   </div>
-</div>
 
 <script>
-/* ---------- CONFIG ---------- */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzymHjYql5GpY5OeGlDyxKL0DWZYu1ff7phJ--d3lOcLADBBPLJd-H18B8Mx-X9m377/exec';
-const UPI_ID = 'yashmani1996@okhdfcbank';
-const PAYEE_NAME = 'Yash Mani';
+/* ================== CONFIG ================== */
+// set this to your Apps Script web app URL (deployed)
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzQyYV2o8gw6y4Hd9a_qBum0YOYEJ0x134z5QXx2JwSRtV8v76dHwXciUJmH1xheCZU/exec';
+
 const BASE_FEE = 8499;
 const DISC_FEE = 6499;
-// keep coupon codes secret: not shown in UI
 const VALID_COUPONS = new Set(['AKSHAY2000','MELVIN2000','CHIRAG2000','YASSH2000','YASH2000','MANVI2000','AKANKSHA2000','YAHVI2000','JORDAN2000','NOEL2000','SANKET2000','LEONEL2000']);
 
-/* ---------- UI refs ---------- */
-const regForm = document.getElementById('regForm');
-const applyBtn = document.getElementById('applyBtn');
-const couponInput = document.getElementById('coupon');
+/* ================== UI ================ */
 const totalFeeEl = document.getElementById('totalFee');
 const discountEl = document.getElementById('discountAmt');
-const payAmtEl = document.getElementById('payAmt');
-const sidePayEl = document.getElementById('sidePay');
+const payAmtEl   = document.getElementById('payAmt');
+const sidePayEl  = document.getElementById('sidePay');
 const appliedTag = document.getElementById('appliedTag');
-const qrLabel = document.getElementById('qrLabel');
-const img8499 = document.getElementById('qr8499');
-const img6499 = document.getElementById('qr6499');
-const upiLink = document.getElementById('upiLink');
-const copyUpi = document.getElementById('copyUpi');
+const qrLabel    = document.getElementById('qrLabel');
+const img8499    = document.getElementById('qr8499');
+const img6499    = document.getElementById('qr6499');
+
 const fileInput = document.getElementById('screenshot');
-const fileMeta = document.getElementById('fileMeta');
+const fileInfo = document.getElementById('fileInfo');
+const fileWarn = document.getElementById('fileWarn');
 const submitBtn = document.getElementById('submitBtn');
 const okMsg = document.getElementById('okMsg');
 const errMsg = document.getElementById('errMsg');
-const resetBtn = document.getElementById('resetBtn');
 
-/* ---------- state ---------- */
-let couponApplied = false;
-let appliedCode = '';
 let fileReady = false;
 let screenshotBase64 = '';
 let screenshotMime = '';
 let screenshotName = '';
+let couponApplied = false;
+let appliedCode = '';
 
-/* ---------- init ---------- */
+/* ============ init ============== */
 totalFeeEl.textContent = BASE_FEE;
 discountEl.textContent = '0';
 payAmtEl.textContent = BASE_FEE;
 sidePayEl.textContent = BASE_FEE;
 appliedTag.textContent = '—';
+
 img8499.style.display = 'block';
 img6499.style.display = 'none';
-upiLink.href = buildUpiLink(BASE_FEE);
+document.getElementById('upiLink').href = '#'; // could set deep link if desired
 
-/* ---------- helpers ---------- */
-function buildUpiLink(amount){
-  const upi = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR`;
-  return upi;
-}
-function showOk(t){ okMsg.textContent = t; okMsg.style.display='block'; errMsg.style.display='none'; }
-function showError(t){ errMsg.textContent = t; errMsg.style.display='block'; okMsg.style.display='none'; }
-function hideMsgs(){ errMsg.style.display='none'; okMsg.style.display='none'; }
+hideMsgs();
 
-/* ---------- coupon ---------- */
-applyBtn.addEventListener('click', () => {
-  hideMsgs();
-  const code = (couponInput.value || '').trim().toUpperCase();
-  if (!code) { showError('Enter a coupon code to apply.'); return; }
+/* ============ coupon logic ============ */
+document.getElementById('coupon').addEventListener('input', () => {
+  // not showing list; keep input simple
+});
+
+document.getElementById('applyBtn')?.addEventListener?.('click', applyCoupon); // if button exists
+
+function applyCoupon() {
+  const code = (document.getElementById('coupon').value || '').trim().toUpperCase();
+  if (!code) {
+    showError('Enter a coupon code to apply.');
+    return;
+  }
   if (VALID_COUPONS.has(code)) {
-    couponApplied = true;
-    appliedCode = code;
+    couponApplied = true; appliedCode = code;
     discountEl.textContent = (BASE_FEE - DISC_FEE).toString();
     payAmtEl.textContent = DISC_FEE;
     sidePayEl.textContent = DISC_FEE;
     appliedTag.textContent = code;
+    // swap QR
     img8499.style.display = 'none';
     img6499.style.display = 'block';
-    upiLink.href = buildUpiLink(DISC_FEE);
     qrLabel.textContent = 'Scan to pay ₹' + DISC_FEE;
-    showOk('Coupon applied.');
+    showOk('Coupon applied successfully.');
   } else {
-    couponApplied = false;
-    appliedCode = '';
+    couponApplied = false; appliedCode = '';
     discountEl.textContent = '0';
     payAmtEl.textContent = BASE_FEE;
     sidePayEl.textContent = BASE_FEE;
     appliedTag.textContent = '—';
     img8499.style.display = 'block';
     img6499.style.display = 'none';
-    upiLink.href = buildUpiLink(BASE_FEE);
     qrLabel.textContent = 'Scan to pay ₹' + BASE_FEE;
     showError('Invalid coupon code.');
   }
-});
+}
 
-/* ---------- copy UPI ---------- */
-copyUpi.addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(UPI_ID); showOk('UPI ID copied.'); }
-  catch { showError('Could not copy UPI ID.'); }
-});
-
-/* ---------- file handling ---------- */
+/* ============ File handling ============ */
 fileInput.addEventListener('change', async (ev) => {
   hideMsgs();
   fileReady = false;
   screenshotBase64 = '';
   screenshotMime = '';
   screenshotName = '';
-  submitBtn.disabled = true;
+  fileWarn.style.display = 'none';
 
-  const f = ev.target.files && ev.target.files[0];
-  if (!f) {
-    fileMeta.textContent = 'No file chosen';
+  const file = ev.target.files && ev.target.files[0];
+  if (!file) {
+    fileInfo.textContent = 'No file chosen';
     return;
   }
-
-  // file size check (100 MB)
+  // size check <= 100 MB
   const maxBytes = 100 * 1024 * 1024;
-  if (f.size > maxBytes) {
-    fileMeta.textContent = `${f.name} (${Math.round(f.size/1024/1024)} MB) — too large. Please upload ≤ 100 MB.`;
-    showError('File too large. Please upload a file ≤ 100 MB.');
+  if (file.size > maxBytes) {
+    fileWarn.style.display = 'block';
+    fileWarn.textContent = 'File too large. Please upload a file smaller than 100 MB.';
     fileInput.value = '';
+    fileInfo.textContent = 'No file chosen';
     return;
   }
 
-  // show meta immediately
-  fileMeta.textContent = `${f.name} (${Math.round(f.size/1024)} KB) — processing...`;
+  fileInfo.textContent = `${file.name} (${Math.round(file.size/1024)} KB) — processing...`;
 
-  // read as data URL and strip "data:*;base64,"
+  // read as DataURL and strip prefix, store base64 string
   const reader = new FileReader();
-  reader.onload = function(e){
+  reader.onload = function(e) {
     const dataUrl = e.target.result;
-    const parts = dataUrl.split(',');
-    if (parts.length !== 2) {
-      showError('File read failed.');
-      fileMeta.textContent = 'File read failed';
-      return;
-    }
-    const header = parts[0]; // data:<mime>;base64
-    screenshotBase64 = parts[1];
-    screenshotMime = (header.match(/data:([^;]+);/) || [,'image/jpeg'])[1];
-    screenshotName = f.name;
+    // dataUrl looks like "data:image/png;base64,AAAA..."
+    const idx = dataUrl.indexOf(',');
+    const prefix = dataUrl.substring(0, idx);
+    const base64 = dataUrl.substring(idx + 1);
+    let mime = 'image/jpeg';
+    // infer mime from prefix
+    const m = prefix.match(/data:(.*);base64/);
+    if (m && m[1]) mime = m[1];
+
+    screenshotBase64 = base64;
+    screenshotMime = mime;
+    screenshotName = file.name;
     fileReady = true;
-    fileMeta.textContent = `${f.name} (${Math.round(f.size/1024)} KB) — ready`;
-    submitBtn.disabled = false;
-    showOk('File ready. You can submit.');
+    fileInfo.textContent = `${file.name} (${Math.round(file.size/1024)} KB) — ready`;
+    showOk('File ready. You can submit the form.');
   };
   reader.onerror = function() {
-    showError('Failed to read file.');
-    fileMeta.textContent = 'File read failed';
+    fileInfo.textContent = 'Error reading file';
+    showError('Could not read file.');
   };
-  reader.readAsDataURL(f);
+  reader.readAsDataURL(file);
 });
 
-/* ---------- reset ---------- */
-resetBtn.addEventListener('click', () => {
-  regForm.reset();
-  couponInput.value = '';
-  couponApplied = false; appliedCode = '';
-  totalFeeEl.textContent = BASE_FEE;
+/* ============ form submit ============ */
+document.getElementById('regForm').addEventListener('submit', async function(ev) {
+  ev.preventDefault();
+  hideMsgs();
+
+  // Basic client side validation
+  const name = document.getElementById('name').value.trim();
+  const age  = document.getElementById('age').value.trim();
+  const currentCity = document.getElementById('currentCity').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const instagram = document.getElementById('insta').value.trim();
+  const participationCity = document.getElementById('participationCity').value.trim();
+  const coupon = document.getElementById('coupon').value.trim();
+
+  // Phone: allow flexible input but require at least 10 digits
+  const digitsOnly = phone.replace(/\D/g, '');
+  if (digitsOnly.length < 10) {
+    showError('Please enter a valid phone number with at least 10 digits.');
+    return;
+  }
+
+  if (!fileReady) {
+    showError('Please upload the payment screenshot before submitting.');
+    return;
+  }
+
+  // compute final amount according to coupon (server will double-check)
+  const finalAmount = (coupon && VALID_COUPONS.has(coupon.toUpperCase())) ? DISC_FEE : BASE_FEE;
+
+  // Prepare FormData (do NOT set Content-Type header)
+  const fd = new FormData();
+  fd.append('name', name);
+  fd.append('age', age);
+  fd.append('currentCity', currentCity);
+  fd.append('email', email);
+  fd.append('phone', digitsOnly);
+  fd.append('instagram', instagram);
+  fd.append('participationCity', participationCity);
+  fd.append('coupon', coupon.toUpperCase());
+  fd.append('finalAmountClient', finalAmount);
+
+  // Append base64 pieces as text fields
+  fd.append('screenshotBase64', screenshotBase64);       // large text
+  fd.append('screenshotMime', screenshotMime);
+  fd.append('screenshotName', screenshotName);
+
+  // disable submit while sending
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
+
+  try {
+    const res = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      body: fd
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Unknown error from server');
+
+    showOk('Submitted successfully! Final Amount: ₹' + (data.finalAmount || finalAmount));
+    // clear file and form if you want
+    //document.getElementById('regForm').reset();
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Registration';
+  } catch (err) {
+    console.error('submit error', err);
+    showError('Submission failed: ' + (err.message || err));
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Registration';
+  }
+});
+
+/* ============ reset ============ */
+document.getElementById('resetBtn').addEventListener('click', () => {
+  document.getElementById('regForm').reset();
+  screenshotBase64 = '';
+  fileReady = false;
+  fileInfo.textContent = 'No file chosen';
+  hideMsgs();
+  // reset amounts
   discountEl.textContent = '0';
   payAmtEl.textContent = BASE_FEE;
   sidePayEl.textContent = BASE_FEE;
   appliedTag.textContent = '—';
   img8499.style.display = 'block';
   img6499.style.display = 'none';
-  upiLink.href = buildUpiLink(BASE_FEE);
-  fileMeta.textContent = 'No file chosen';
-  screenshotBase64 = '';
-  submitBtn.disabled = true;
-  hideMsgs();
 });
 
-/* ---------- submit ---------- */
-regForm.addEventListener('submit', async function(ev){
-  ev.preventDefault();
-  hideMsgs();
-
-  if (!fileReady || !screenshotBase64) {
-    showError('Please upload the payment screenshot before submitting.');
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting…';
-
-  // collect data
-  const form = new FormData(regForm);
-  const payload = {
-    name: (document.getElementById('name').value || '').trim(),
-    age: (document.getElementById('age').value || '').trim(),
-    currentCity: (document.getElementById('currentCity').value || '').trim(),
-    email: (document.getElementById('email').value || '').trim(),
-    phone: (document.getElementById('phone').value || '').trim(),
-    instagram: (document.getElementById('insta').value || '').trim(),
-    participationCity: (document.getElementById('cop').value || '').trim(),
-    coupon: (couponInput.value || '').trim().toUpperCase(),
-    finalAmountClient: couponApplied ? DISC_FEE : BASE_FEE,
-    screenshotBase64: screenshotBase64,
-    screenshotMime: screenshotMime,
-    screenshotName: screenshotName
-  };
-
-  try {
-    const res = await fetch(WEB_APP_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Unknown server error');
-    showOk(`Submitted. Final Amount: ₹${data.finalAmount || payload.finalAmountClient}.`);
-    // optionally clear only file
-    fileInput.value = '';
-    fileMeta.textContent = 'No file chosen';
-    screenshotBase64 = '';
-    submitBtn.textContent = 'Submit Registration';
-  } catch (err) {
-    console.error(err);
-    showError('Submission failed: ' + (err.message || err));
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Registration';
-  }
-});
+/* ============ helpers ============ */
+function hideMsgs() {
+  okMsg.style.display = 'none';
+  errMsg.style.display = 'none';
+}
+function showOk(t) {
+  okMsg.textContent = t;
+  okMsg.style.display = 'block';
+  errMsg.style.display = 'none';
+}
+function showError(t) {
+  errMsg.textContent = t;
+  errMsg.style.display = 'block';
+  okMsg.style.display = 'none';
+}
 </script>
 </body>
 </html>
