@@ -144,10 +144,7 @@
   const DISC_FEE    = 6499;
   const VALID_COUPONS = new Set(['AKSHAY2000','MELVIN2000','CHIRAG2000','YASSH2000','YASH2000','MANVI2000','AKANKSHA2000','YAHVI2000','JORDAN2000','NOEL2000','SANKET2000','LEONEL2000']);
 
-  // Build UPI deep-links
-  const upi8499 = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
-  const upi6499 = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${DISC_FEE}&cu=INR`;
-
+ 
   // Generate QR image URLs (static amounts)
   <!-- Direct QR image for ₹8499 -->
 <img id="qr8499" src="qr8499.png" 
@@ -175,12 +172,15 @@ function show6499QR() {
 
 
   // UI refs
-  const totalFeeEl = document.getElementById('totalFee');
-  const discountEl = document.getElementById('discountAmt');
-  const payAmtEl   = document.getElementById('payAmt');
-  const sidePayEl  = document.getElementById('sidePay');
-  const appliedTag = document.getElementById('appliedTag');
-  const qrLabel    = document.getElementById('qrLabel');
+const totalFeeEl = document.getElementById('totalFee');
+const discountEl = document.getElementById('discountAmt');
+const payAmtEl   = document.getElementById('payAmt');
+const sidePayEl  = document.getElementById('sidePay');
+const appliedTag = document.getElementById('appliedTag');
+const qrLabel    = document.getElementById('qrLabel');
+const qr8499El   = document.getElementById('qr8499');
+const qr6499El   = document.getElementById('qr6499');
+
 
   let couponApplied = false;
   let appliedCode   = '';
@@ -200,8 +200,8 @@ function show6499QR() {
       appliedTag.textContent = code;
 
       // Switch to 6499 QR + deep link
-      img8499.style.display = 'none';
-      img6499.style.display = '';
+      qr8499El.style.display = 'none';
+    qr6499El.style.display = 'block';
       document.getElementById('qrImage').src = 'qr6499.png';;
       qrLabel.textContent = 'Scan to pay ₹6499';
       showOk('Coupon applied successfully.');
@@ -214,8 +214,8 @@ function show6499QR() {
       appliedTag.textContent = '—';
 
       // Back to 8499 QR
-      img8499.style.display = 'block';
-      img6499.style.display = 'none';
+      qr8499El.style.display = 'block';
+    qr6499El.style.display = 'none';
       document.getElementById('qrImage').src = 'qr8499.png';;
       qrLabel.textContent = 'Scan to pay ₹8499';
       showError('Invalid coupon code.');
