@@ -62,11 +62,7 @@
           <div>
             <label for="phone">Phone</label>
             <!-- use tel + inputmode numeric + pattern for validation -->
-            <input <input type="tel" id="phone" name="phone" 
-       pattern="^(\+91[\-\s]?)?[6-9]\d{9}$" 
-       placeholder="Enter 10-digit mobile number" 
-       required>
-
+            <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="^(\+91[\-\s]?)?[6-9]\d{9}$" maxlength="15" placeholder="10+ digits" required>
           </div>
           <div>
             <label for="insta">Instagram Profile Link</label>
@@ -136,7 +132,7 @@
 
 <script>
   // ---------- CONFIG ----------
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzymHjYql5GpY5OeGlDyxKL0DWZYu1ff7phJ--d3lOcLADBBPLJd-H18B8Mx-X9m377/exec'; // <--- replace with your deployed URL if different
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyL6aMng1b1yE33kpTU71qdIR3HX7iYU08MSiKzmaLWT3cECo9KmhMJ5nhv7l34_bGweA/exec'; // <--- replace with your deployed URL if different
   const BASE_FEE = 8499;
   const DISC_FEE = 6499;
   // hidden coupon set
