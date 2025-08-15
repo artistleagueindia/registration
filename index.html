@@ -64,7 +64,27 @@
         <div class="row">
           <div>
             <label for="phone">Phone</label>
-            <input id="phone" name="phone" inputmode="numeric" pattern="\\d{10,}" placeholder="10+ digits" required />
+<input
+  id="phone"
+  name="phone"
+  type="tel"
+  inputmode="numeric"
+  autocomplete="tel"
+  placeholder="e.g. 9876543210 or +91 98765 43210"
+  pattern="(\+91[\s-]?)?[0]?[6-9][0-9]{1}[\s-]?[0-9]{4}[\s-]?[0-9]{4}"
+  title="Enter a valid Indian mobile number (10 digits, optionally with +91, spaces or dashes)"
+  required
+/>
+<script>
+  const phone = document.getElementById('phone');
+  phone.addEventListener('input', () => {
+    // Keep digits, spaces, dashes and a single leading +
+    phone.value = phone.value
+      .replace(/[^\d+\s-]/g, '')     // remove other chars
+      .replace(/(?!^)\+/g, '');      // allow + only at start
+  });
+</script>
+
           </div>
           <div>
             <label for="insta">Instagram Profile Link</label>
