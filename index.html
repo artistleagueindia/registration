@@ -145,11 +145,11 @@
 
   // Generate QR image URLs (static amounts)
   <!-- Direct QR image for ₹8499 -->
-<img id="qr8499" src="https://drive.google.com/uc?export=view&id=1jFM9bztrrYrbqwpwX-eHedVkSZ9jwmkW" 
+<img id="qr8499" src="qr8499.png" 
      alt="QR Code ₹8499" style="width:280px; height:280px;">
 
 <!-- Direct QR image for ₹6499 (hidden initially) -->
-<img id="qr6499" src="https://drive.google.com/uc?export=view&id=1ZeBj14qse_z2UpQMyuh8IQc_pDGncLnA" 
+<img id="qr6499" src="qr6499.png" 
      alt="QR Code ₹6499" style="width:280px; height:280px; display:none;">
 
 
@@ -197,7 +197,7 @@ function show6499QR() {
       // Switch to 6499 QR + deep link
       img8499.style.display = 'none';
       img6499.style.display = '';
-      document.getElementById('upiLink').href = upi6499;
+      document.getElementById('qrImage').src = 'qr6499.png';;
       qrLabel.textContent = 'Scan to pay ₹6499';
       showOk('Coupon applied successfully.');
     } else {
@@ -211,7 +211,7 @@ function show6499QR() {
       // Back to 8499 QR
       img8499.style.display = 'block';
       img6499.style.display = 'none';
-      document.getElementById('upiLink').href = upi8499;
+      document.getElementById('qrImage').src = 'qr8499.png';;
       qrLabel.textContent = 'Scan to pay ₹8499';
       showError('Invalid coupon code.');
     }
@@ -238,7 +238,7 @@ function show6499QR() {
     appliedTag.textContent = '—';
     img8499.style.display = '';
     img6499.style.display = 'none';
-    document.getElementById('upiLink').href = upi8499;
+    document.getElementById('qrImage').src = 'qr8499.png';;
     qrLabel.textContent = 'Scan to pay ₹8499';
     hideMsgs();
   });
