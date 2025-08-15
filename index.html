@@ -62,7 +62,11 @@
           <div>
             <label for="phone">Phone</label>
             <!-- use tel + inputmode numeric + pattern for validation -->
-            <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="\\d{10,}" maxlength="15" placeholder="10+ digits" required>
+            <input <input type="tel" id="phone" name="phone" 
+       pattern="^(\+91[\-\s]?)?[6-9]\d{9}$" 
+       placeholder="Enter 10-digit mobile number" 
+       required>
+
           </div>
           <div>
             <label for="insta">Instagram Profile Link</label>
