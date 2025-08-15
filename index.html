@@ -1,34 +1,35 @@
+<!-- index.html -->
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Artist League Camp 2025 — Registration</title>
-  <style>
-    :root{--bg:#0b0b10;--card:#141420;--text:#f5f7ff;--muted:#a8acc3;--accent:#5b8cff;--ok:#1db954;--warn:#ffb020}
-    body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text)}
-    .wrap{max-width:980px;margin:22px auto;padding:18px}
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-    .card{background:var(--card);border-radius:16px;padding:18px;box-sizing:border-box}
-    h1{font-size:20px;margin:0 0 12px}
-    label{display:block;font-size:13px;margin:10px 0 6px;color:var(--muted)}
-    input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2a3a;background:#10101a;color:var(--text);box-sizing:border-box}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .coupon-bar{display:flex;gap:8px;align-items:center;margin-top:6px}
-    .btn{padding:10px 14px;border:0;border-radius:10px;cursor:pointer;color:#fff;background:var(--accent)}
-    .btn.secondary{background:#2a2a3a}
-    .btn.ok{background:var(--ok)}
-    .muted{color:var(--muted);font-size:13px}
-    .calc{background:#0f1320;border:1px solid #2a314b;border-radius:12px;padding:12px;margin-top:12px}
-    .calc .line{display:flex;justify-content:space-between;margin:6px 0}
-    .calc .total{font-weight:700;font-size:18px}
-    .qrbox{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:12px}
-    .qrbox img{width:220px;height:220px;border-radius:12px;background:#fff;display:block}
-    .okmsg{margin-top:12px;padding:10px;border-radius:10px;background:#0f1f14;border:1px solid #1e7d3b}
-    .errmsg{margin-top:12px;padding:10px;border-radius:10px;background:#2a1414;border:1px solid #7d1e1e}
-    .file-info{font-size:13px;color:var(--muted);margin-top:8px}
-    @media (max-width:940px){.grid{grid-template-columns:1fr}}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Artist League Camp 2025 — Registration</title>
+<style>
+  :root{--bg:#0b0b10;--card:#141420;--text:#f5f7ff;--muted:#a8acc3;--accent:#5b8cff;--ok:#1db954;--warn:#ffb020}
+  body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text)}
+  .wrap{max-width:980px;margin:22px auto;padding:18px}
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+  .card{background:var(--card);border-radius:16px;padding:18px;box-sizing:border-box}
+  h1{font-size:20px;margin:0 0 12px}
+  label{display:block;font-size:13px;margin:10px 0 6px;color:var(--muted)}
+  input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2a3a;background:#10101a;color:var(--text);box-sizing:border-box}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .coupon-bar{display:flex;gap:8px;align-items:center;margin-top:6px}
+  .btn{padding:10px 14px;border:0;border-radius:10px;cursor:pointer;color:#fff;background:var(--accent)}
+  .btn.secondary{background:#2a2a3a}
+  .btn.ok{background:var(--ok)}
+  .muted{color:var(--muted);font-size:13px}
+  .calc{background:#0f1320;border:1px solid #2a314b;border-radius:12px;padding:12px;margin-top:12px}
+  .calc .line{display:flex;justify-content:space-between;margin:6px 0}
+  .calc .total{font-weight:700;font-size:18px}
+  .qrbox{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:12px}
+  .qrbox img{width:220px;height:220px;border-radius:12px;background:#fff;display:block}
+  .okmsg{margin-top:12px;padding:10px;border-radius:10px;background:#0f1f14;border:1px solid #1e7d3b}
+  .errmsg{margin-top:12px;padding:10px;border-radius:10px;background:#2a1414;border:1px solid #7d1e1e}
+  .file-info{font-size:13px;color:var(--muted);margin-top:8px}
+  @media (max-width:940px){.grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -51,7 +52,7 @@
         <div class="row">
           <div>
             <label for="city">Current City</label>
-            <input id="city" name="city" placeholder="" />
+            <input id="city" name="city" />
           </div>
           <div>
             <label for="email">Email</label>
@@ -115,24 +116,8 @@
       <div class="qrbox">
         <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
 
-        <img id="qr8499" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADhUlEQVR4nO2cXYqkShBGT4xCPyrM
-AnopuoNe0qxpdqBL6QUM6GNDSsxDRmpat+HCTBVdVfPFg5SlhzThI/7S1Jw/s/nbH4IgUqRIkSJF
-ihR5f6SFtZj1m+XDuJrB2uarsJa7xi9+WpF3SQ7u7r6A+9I4wwI+0bhZH//ZSOPu7n4mv+JpRd4l
-uRb/Mlt4H+Z+M+A4gJm11xtT5HOQ7cW5DUsP86vnXz6//WoNmgTrtcYU+eTk3APDe5tjWfl3K1nQ
-TcYU+RRk5+4TwLA0Dt2H2chmNq4vVRbk7ukenlbkHZKzmZn1+9/riwORXdu4tgCbRYV2nTFFPgmZ
-86F6waP7MOgSzD3mrJs5fBh052WRx5qnyFuTNgKlIfTiPq0t7kvcYyONH67KxquMKfJZSCLZ6RJx
-oDSJ6NKpcZTv87DpseYp8nYkIYklmorhfTr3yK5zZzFFmTYsjTQk8sJCEYBPxfFEmZZrtcYZPMGQ
-hbQTjzVPkbcjI0btixtVQJuO0OYpx7dYCZGGRNbmtRWpTPlahLGwEt/kh0Se7ciVK2c0LJRuIwBd
-ym4pnJE0JLK2EstKjIqcOkUEC+UQFVqkR9KQyMrCq3R15VUkFZl0PsDupaQhkbUdyVBpErkfSdFR
-l+XMKH5JQyIrO+RT+kPN3lRMe0lGTo/iFmlIZG0llnndmN7L+uKWqGp7aUjk2So/lCNYlk/4HDi9
-AVsCmjQksrKoy/Y8J05LL+jskdQfEvmJHe3FfDp1RVJTVy4MC7uXcmlI5IWFJJZ9vWyBsgRLfZqV
-A4plIi/s8EOxwrH7oTqTJuqySk2PNU+RtyNPax2n7Do6i52XDmR3ypukIZHFjlh2Wi87Dvub+F2d
-dktDIovt+8uaxPyaWvb9iD6/JjzvNPvZ55ts+Pm91GmPNU+RtyOzhozuw5y1KGruMei2FjAcUst+
-1Ybpq55W5D2S5/eHjg7Qf2r7yJa01iHyc/L47gdz/u4H2I/3Fua8wb7x7If2FfzHnKfIW5B7n9r9
-WOs4llZLmYb8kMj/I8t3P6o9rSOb5X2u9up5f1lse73SmCKfg7z87ofPbws2OMDa47M1Dqvh89gk
-QLFM5IVdaojhvU3A1vr8Vpf6Bps56/fkfzumyOciP82Hwqq9Qac2pPIhkSeL1DlbbOTIOXV+Lw2q
-1/Hrt/Mfa54ib0eavnEuUqRIkSJFivzHyd/mRZpyJ4jdeQAAAABJRU5ErkJggg==" alt="QR 8499">
-
+        <!-- Embedded base64 QRs you provided -->
+        <img id="qr8499" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY_ToAAADhUlEQVR4nO2cXYqkShBGT4xCPyrMAnopuoNe0qxpdqBL6QUM6GNDSsxDRmpat-HCTBVdVfPFg5SlhzThI_7S1Jw_s_nbH4IgUqRIkSJFihR5f6SFtZj1m-XDuJrB2uarsJa7xi9-WpF3SQ7u7r6A-9I4wwI-0bhZH__ZSOPu7n4mv-JpRd4luRb_Mlt4H-Z-M-A4gJm11xtT5HOQ7cW5DUsP86vnXz6__WoNmgTrtcYU-eTk3APDe5tjWfl3K1nQTcYU-RRk5-4TwLA0Dt2H2chmNq4vVRbk7ukenlbkHZKzmZn1-9_riwORXdu4tgCbRYV2nTFFPgmZ86F6waP7MOgSzD3mrJs5fBh052WRx5qnyFuTNgKlIfTiPq0t7kvcYyONH67KxquMKfJZSCLZ6RJxoDSJ6NKpcZTv87DpseYp8nYkIYklmorhfTr3yK5zZzFFmTYsjTQk8sJCEYBPxfFEmZZrtcYZPMGQhbQTjzVPkbcjI0btixtVQJuO0OYpx7dYCZGGRNbmtRWpTPlahLGwEt_kh0Se7ciVK2c0LJRuIwBdym4pnJE0JLK2EstKjIqcOkUEC-UQFVqkR9KQyMrCq3R15VUkFZl0PsDupaQhkbUdyVBpErkfSdFRl-XMKH5JQyIrO-RT-kPN3lRMe0lGTo_iFmlIZG0llnndmN7L-uKWqGp7aUjk2So_lCNYlk_4HDi9AVsCmjQksrKoy_Y8J05LL-jskdQfEvmJHe3FfDp1RVJTVy4MC7uXcmlI5IWFJJZ9vWyBsgRLfZqVA4plIi_s8EOxwrH7oTqTJuqySk2PNU-RtyNPax2n7Do6i52XDmR3ypukIZHFjlh2Wi87Dvub-F2ddktDIovt-8uaxPyaWvb9iD6_JjzvNPvZ55ts-Pm91GmPNU-RtyOzhozuw5y1KGruMei2FjAcUst-1Ybpq55W5D2S5_eHjg7Qf2r7yJa01iHyc_L47gdz_u4H2I_3Fua8wb7x7If2FfzHnKfIW5B7n9r9WOs4llZLmYb8kMj_I8t3P6o9rSOb5X2u9up5f1lse73SmCKfg7z87ofPbws2OMDa47M1Dqvh89gkQLFM5IVdaojhvU3A1vr8Vpf6Bps56_fkfzumyOciP82Hwqq9Qac2pPIhkSeL1DlbbOTIOXV-Lw2q1_Hrt_Mfa54ib0eavnEuUqRIkSJFivzHyd_mRZpyJ4jdeQAAAABJRU5ErkJggg==" alt="QR 8499">
         <img id="qr6499" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADhUlEQVR4nO2cXYqkShBGT4xCPyrMAnopuoNe0qxpdqBL6QUM6GNDSsxDRmpat+HCTBVdVfPFg5SlhzThI/7S1Jw/s/nbH4IgUqRIkSJFihR5f6SFtZj1m+XDuJrB2uarsJa7xi9+WpF3SQ7u7r6A+9I4wwI+0bhZH//ZSOPu7n4mv+JpRd4luRb/Mlt4H+Z+M+A4gJm11xtT5HOQ7cW5DUsP86vnXz6//WoNmgTrtcYU+eTk3APDe5tjWfl3K1nQTcYU+RRk5+4TwLA0Dt2H2chmNq4vVRbk7ukenlbkHZKzmZn1+9/riwORXdu4tgCbRYV2nTFFPgmZ86F6waP7MOgSzD3mrJs5fBh052WRx5qnyFuTNgKlIfTiPq0t7kvcYyONH67KxquMKfJZSCLZ6RJxoDSJ6NKpcZTv87DpseYp8nYkIYklmorhfTr3yK5zZzFFmTYsjTQk8sJCEYBPxfFEmZZrtcYZPMGQhbQTjzVPkbcjI0btixtVQJuO0OYpx7dYCZGGRNbmtRWpTPlahLGwEt/kh0Se7ciVK2c0LJRuIwBdym4pnJE0JLK2EstKjIqcOkUEC+UQFVqkR9KQyMrCq3R15VUkFZl0PsDupaQhkbUdyVBpErkfSdFRl+XMKH5JQyIrO+RT+kPN3lRMe0lGTo/iFmlIZG0llnndmN7L+uKWqGp7aUjk2So/lCNYlk/4HDi9AVsCmjQksrKoy/Y8J05LL+jskdQfEvmJHe3FfDp1RVJTVy4MC7uXcmlI5IWFJJZ9vWyBsgRLfZqVA4plIi/s8EOxwrH7oTqTJuqySk2PNU+RtyNPax2n7Do6i52XDmR3ypukIZHFjlh2Wi87Dvub+F2ddktDIovt+8uaxPyaWvb9iD6/JjzvNPvZ55ts+Pm91GmPNU+RtyOzhozuw5y1KGruMei2FjAcUst+1Ybpq55W5D2S5/eHjg7Qf2r7yJa01iHyc/L47gdz/u4H2I/3Fua8wb7x7If2FfzHnKfIW5B7n9r9WOs4llZLmYb8kMj/I8t3P6o9rSOb5X2u9up5f1lse73SmCKfg7z87ofPbws2OMDa47M1Dqvh89gkQLFM5IVdaojhvU3A1vr8Vpf6Bps56/fkfzumyOciP82Hwqq9Qac2pPIhkSeL1DlbbOTIOXV+Lw2q1/Hrt/Mfa54ib0eavnEuUqRIkSJFivzHyd/mRZpyJ4jdeQAAAABJRU5ErkJggg==" alt="QR 6499" style="display:none">
 
         <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
@@ -149,26 +134,31 @@ QLFM5IVdaojhvU3A1vr8Vpf6Bps56/fkfzumyOciP82Hwqq9Qac2pPIhkSeL1DlbbOTIOXV+Lw2q
 </div>
 
 <script>
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby5KS8HBQW13VgJbZ35JQWcCas5kCF4TryoguSS7k69wgAztdra2JYj8xwUil7lrCXgkg/exec';
+/* ---------- CONFIG - update WEB_APP_URL if you deploy to a different URL ---------- */
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwB3BvpfRmrAyavT9xBZFVydaNflmVeB70L6FQS6HUGedCKKq7cPlNzpxZ_dcU36qVC/exec';
 const UPI_ID = 'yashmani1996@okhdfcbank';
 const PAYEE_NAME = 'Yash Mani';
 const BASE_FEE = 8499;
 const DISC_FEE = 6499;
-const SUBMIT_MAX_BYTES = 100 * 1024 * 1024;
+const SUBMIT_MAX_BYTES = 100 * 1024 * 1024; // 100MB
 
+/* ---------- UI refs ---------- */
 const totalFeeEl = document.getElementById('totalFee');
 const discountEl = document.getElementById('discountAmt');
 const payAmtEl = document.getElementById('payAmt');
 const sidePayEl = document.getElementById('sidePay');
 const appliedTag = document.getElementById('appliedTag');
 const qrLabel = document.getElementById('qrLabel');
+
 const qr8499 = document.getElementById('qr8499');
 const qr6499 = document.getElementById('qr6499');
 const upiLink = document.getElementById('upiLink');
+
 const applyBtn = document.getElementById('applyBtn');
 const couponInput = document.getElementById('coupon');
 const screenshotInput = document.getElementById('screenshot');
 const fileInfo = document.getElementById('fileInfo');
+
 const okMsg = document.getElementById('okMsg');
 const errMsg = document.getElementById('errMsg');
 const submitBtn = document.getElementById('submitBtn');
@@ -176,14 +166,27 @@ const submitBtn = document.getElementById('submitBtn');
 let couponApplied = false;
 let currentFinal = BASE_FEE;
 
+/* ---------- init UI ---------- */
+totalFeeEl.textContent = BASE_FEE;
+discountEl.textContent = '0';
+payAmtEl.textContent = BASE_FEE;
+sidePayEl.textContent = BASE_FEE;
+appliedTag.textContent = '—';
+upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
+qr8499.style.display = 'block';
+qr6499.style.display = 'none';
+
+/* ---------- helpers ---------- */
 function hideMsgs(){ okMsg.style.display='none'; errMsg.style.display='none'; }
 function showOk(txt){ okMsg.textContent = txt; okMsg.style.display = 'block'; errMsg.style.display = 'none'; }
 function showError(txt){ errMsg.textContent = txt; errMsg.style.display = 'block'; okMsg.style.display = 'none'; }
 
+/* ---------- copy UPI ---------- */
 document.getElementById('copyUpi').addEventListener('click', async () => {
   try{ await navigator.clipboard.writeText(UPI_ID); showOk('UPI ID copied.'); } catch(e){ showError('Could not copy UPI ID.'); }
 });
 
+/* ---------- file selection ---------- */
 screenshotInput.addEventListener('change', () => {
   hideMsgs();
   const f = screenshotInput.files[0];
@@ -198,18 +201,20 @@ screenshotInput.addEventListener('change', () => {
   submitBtn.disabled = false;
 });
 
+/* ---------- coupon check (server-side) ---------- */
 applyBtn.addEventListener('click', async () => {
   hideMsgs();
   const code = (couponInput.value || '').trim();
   if(!code){ showError('Enter a coupon code to apply.'); return; }
 
-  try{
+  try {
     applyBtn.disabled = true;
     applyBtn.textContent = 'Checking...';
     const res = await fetch(`${WEB_APP_URL}?action=validateCoupon&coupon=${encodeURIComponent(code)}`, { method:'GET' });
     const data = await res.json();
-    if(!data || !data.ok) throw new Error(data.error || "Invalid response");
-    if(data.valid){
+    if(!data || !data.ok) throw new Error(data && data.error ? data.error : 'Invalid response');
+
+    if(data.valid) {
       couponApplied = true;
       currentFinal = data.finalAmount || DISC_FEE;
       totalFeeEl.textContent = BASE_FEE;
@@ -236,10 +241,16 @@ applyBtn.addEventListener('click', async () => {
       qrLabel.textContent = `Scan to pay ₹${BASE_FEE}`;
       showError('Invalid coupon code.');
     }
-  } catch(err){ console.error('coupon check error', err); showError('Coupon validation failed. Try again.'); }
-  finally { applyBtn.disabled = false; applyBtn.textContent = 'Apply'; }
+  } catch (err) {
+    console.error('coupon check error', err);
+    showError('Coupon validation failed. Try again.');
+  } finally {
+    applyBtn.disabled = false;
+    applyBtn.textContent = 'Apply';
+  }
 });
 
+/* ---------- reset ---------- */
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('regForm').reset();
   hideMsgs();
@@ -257,6 +268,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   submitBtn.disabled = false;
 });
 
+/* ---------- submit ---------- */
 document.getElementById('regForm').addEventListener('submit', async (ev) => {
   ev.preventDefault();
   hideMsgs();
@@ -280,22 +292,20 @@ document.getElementById('regForm').addEventListener('submit', async (ev) => {
 
     const res = await fetch(WEB_APP_URL, { method: 'POST', body: fd });
     const contentType = res.headers.get('content-type') || '';
-    if(!contentType.includes('application/json')){
+    if(!contentType.includes('application/json')) {
       const txt = await res.text();
       console.error('Unexpected server response:', txt);
       throw new Error('Server returned non-JSON response. Check deployment & logs.');
     }
-
     const data = await res.json();
     if(!data.ok) throw new Error(data.error || 'Submission failed');
 
     showOk(`Submitted. Final Amount: ₹${data.finalAmount || fd.get('finalAmountClient')}`);
-    if(data.driveLink){
+    if(data.driveLink) {
       fileInfo.innerHTML = `File saved: <a href="${data.driveLink}" target="_blank" rel="noopener">${data.driveLink}</a>`;
     }
-
     screenshotInput.value = '';
-  } catch(err){
+  } catch(err) {
     console.error('submit error', err);
     showError('Submission failed: ' + (err.message || err));
   } finally {
