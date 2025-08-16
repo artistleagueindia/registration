@@ -1,32 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Artist League Camp 2025 — Registration</title>
-<style>
-  :root{--bg:#0b0b10;--card:#141420;--text:#f5f7ff;--muted:#a8acc3;--accent:#5b8cff;--ok:#1db954;--warn:#ffb020}
-  body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text)}
-  .wrap{max-width:980px;margin:22px auto;padding:18px}
-  .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-  .card{background:var(--card);border-radius:16px;padding:18px;box-sizing:border-box}
-  h1{font-size:20px;margin:0 0 12px}
-  label{display:block;font-size:13px;margin:10px 0 6px;color:var(--muted)}
-  input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2a3a;background:#10101a;color:var(--text);box-sizing:border-box}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .coupon-bar{display:flex;gap:8px;align-items:center;margin-top:6px}
-  .btn{padding:10px 14px;border:0;border-radius:10px;cursor:pointer;color:#fff;background:var(--accent)}
-  .btn.secondary{background:#2a2a3a}
-  .btn.ok{background:var(--ok)}
-  .muted{color:var(--muted);font-size:13px}
-  .calc{background:#0f1320;border:1px solid #2a314b;border-radius:12px;padding:12px;margin-top:12px}
-  .calc .line{display:flex;justify-content:space-between;margin:6px 0}
-  .calc .total{font-weight:700;font-size:18px}
-  .okmsg{margin-top:12px;padding:10px;border-radius:10px;background:#0f1f14;border:1px solid #1e7d3b}
-  .errmsg{margin-top:12px;padding:10px;border-radius:10px;background:#2a1414;border:1px solid #7d1e1e}
-  .small{font-size:12px;color:var(--muted)}
-  @media (max-width:940px){.grid{grid-template-columns:1fr}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Artist League Camp 2025 — Registration</title>
+  <style>
+    :root{--bg:#0b0b10;--card:#141420;--text:#f5f7ff;--muted:#a8acc3;--accent:#5b8cff;--ok:#1db954;--warn:#ffb020}
+    body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text)}
+    .wrap{max-width:980px;margin:22px auto;padding:18px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .card{background:var(--card);border-radius:16px;padding:18px;box-sizing:border-box}
+    h1{font-size:20px;margin:0 0 12px}
+    label{display:block;font-size:13px;margin:10px 0 6px;color:var(--muted)}
+    input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2a3a;background:#10101a;color:var(--text);box-sizing:border-box}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .coupon-bar{display:flex;gap:8px;align-items:center;margin-top:6px}
+    .btn{padding:10px 14px;border:0;border-radius:10px;cursor:pointer;color:#fff;background:var(--accent)}
+    .btn.secondary{background:#2a2a3a}
+    .btn.ok{background:var(--ok)}
+    .muted{color:var(--muted);font-size:13px}
+    .calc{background:#0f1320;border:1px solid #2a314b;border-radius:12px;padding:12px;margin-top:12px}
+    .calc .line{display:flex;justify-content:space-between;margin:6px 0}
+    .calc .total{font-weight:700;font-size:18px}
+    .okmsg{margin-top:12px;padding:10px;border-radius:10px;background:#0f1f14;border:1px solid #1e7d3b}
+    .errmsg{margin-top:12px;padding:10px;border-radius:10px;background:#2a1414;border:1px solid #7d1e1e}
+    .sidebar { color:var(--muted) }
+    .logo { width:120px; height:auto; display:block; margin-bottom:12px }
+    @media (max-width:940px){.grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
 <div class="wrap">
@@ -95,7 +96,7 @@
           <input id="coupon" name="coupon" placeholder="" />
           <button class="btn" type="button" id="applyBtn">Apply</button>
         </div>
-        <div class="muted small" style="margin-top:6px">Coupon list is private and validated server-side. Coupons apply only to full camp.</div>
+        <div class="muted" style="margin-top:6px">Coupon list is private and validated server-side. Coupons apply only to full camp.</div>
 
         <div class="calc" id="calcBox">
           <div class="line"><span>Total fee</span><span>₹ <span id="totalFee">8499</span></span></div>
@@ -107,163 +108,191 @@
         <div class="errmsg" id="errMsg" style="display:none;"></div>
 
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-          <!-- Pay only. No separate Submit button -->
-          <button class="btn" type="button" id="payBtn">Pay</button>
+          <button id="payBtn" class="btn" type="button">Pay</button>
           <button class="btn secondary" type="button" id="resetBtn">Reset</button>
         </div>
       </form>
     </div>
 
-    <!-- RIGHT: info -->
-    <div class="card">
-      <h1>Payment & Info</h1>
-      <div class="muted small" id="payStatus">Not paid</div>
+    <!-- RIGHT: sidebar -->
+    <div class="card sidebar">
+      <!-- logo placeholder: paste your logo into src when ready -->
+      <img id="logo" class="logo" src="" alt="Artist League logo" style="display:none">
 
-      <div class="calc" style="margin-top:16px">
+      <h1 style="font-size:16px;margin-top:0">Payment summary</h1>
+      <div class="calc" style="margin-top:6px">
         <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
         <div class="line"><span>Payable now</span><span>₹ <span id="sidePay">8499</span></span></div>
       </div>
 
-      <div style="margin-top:12px">
-        <h3 style="margin:8px 0">About us</h3>
-        <p class="small">Artist League — community-first live art education experiences across India.</p>
+      <h2 style="margin-top:18px">About us</h2>
+      <p>Artist League — community-first live art education experiences across India. (Short about text — will update full bio & logo when provided.)</p>
 
-        <h3 style="margin:8px 0">Terms & policies</h3>
-        <p class="small">By registering you agree to our Terms & Conditions. Registrations are final — no refunds. Organizer may cancel or reschedule events; in such case a credit/alternate arrangement may be offered.</p>
+      <h2 style="margin-top:12px">Terms & policies</h2>
+      <p>By registering you agree to our Terms & Conditions. Registrations are final — no refunds. Organizer may cancel or reschedule events; in such case a credit or alternate arrangement may be offered. Full policies will be provided on the final confirmation page and in email.</p>
 
-        <h3 style="margin:8px 0">Contact</h3>
-        <p class="small">Email: artistleagueindia@gmail.com<br>Phone: +91 9837816447</p>
-      </div>
+      <h2 style="margin-top:12px">Contact</h2>
+      <p style="margin-bottom:4px">Email: artistleagueindia@gmail.com</p>
+      <p>Phone: +91 9837816447</p>
     </div>
   </div>
 </div>
 
 <script>
-/* -------------- CONFIG -------------- */
-/* !!! REPLACE THIS with your actual deployed webapp exec URL (Apps Script) !!! */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw-pHoFd7AxmfFqnPKA-26L4v3czzEkZOK6X23GG-ocQWvwaHTZlx1edU5AByzGQfpX/exec';
+/* ================= CONFIG - set your Apps Script webapp exec URL here ================= */
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby0PJmPSav0PXu3WVwl8nBQChYh85M6rIwpPpL0ueC27Bauznu_zVb6COGQKxMGgZwx/exec';
+// If you change webapp, update this value.
 
-const applyBtn = document.getElementById('applyBtn');
-const couponInput = document.getElementById('coupon');
-const packageSelect = document.getElementById('package');
-
-const payBtn = document.getElementById('payBtn');
-const resetBtn = document.getElementById('resetBtn');
-
-const okMsg = document.getElementById('okMsg');
-const errMsg = document.getElementById('errMsg');
+const PACKAGE_PRICING = {
+  FULL_CAMP: 8499,
+  8_CLASSES: 7699,
+  7_CLASSES: 6799,
+  6_CLASSES: 5799,
+  5_CLASSES: 4799,
+  4_CLASSES: 3899,
+  3_CLASSES: 2999,
+  2_CLASSES: 2199,
+  SINGLE_CLASS: 1200,
+  AKSHAY_STAG: 1199,
+  AKSHAY_COUPLE: 1999
+};
 
 const totalFeeEl = document.getElementById('totalFee');
 const discountEl = document.getElementById('discountAmt');
 const payAmtEl = document.getElementById('payAmt');
 const sidePayEl = document.getElementById('sidePay');
 const appliedTag = document.getElementById('appliedTag');
-const payStatusEl = document.getElementById('payStatus');
+
+const applyBtn = document.getElementById('applyBtn');
+const couponInput = document.getElementById('coupon');
+const packageSel = document.getElementById('package');
+
+const okMsg = document.getElementById('okMsg');
+const errMsg = document.getElementById('errMsg');
+const payBtn = document.getElementById('payBtn');
+const resetBtn = document.getElementById('resetBtn');
+const logoImg = document.getElementById('logo');
 
 let couponApplied = false;
-let currentFinal = parseInt(totalFeeEl.textContent || '8499', 10);
+let couponCodeApplied = '';
+let currentFinal = PACKAGE_PRICING.FULL_CAMP;
 
-// init
-function initUI(){
-  const pkg = packageSelect.value || 'FULL_CAMP';
-  currentFinal = getPackagePrice(pkg);
-  totalFeeEl.textContent = currentFinal;
-  discountEl.textContent = '0';
-  payAmtEl.textContent = currentFinal;
-  sidePayEl.textContent = currentFinal;
-  appliedTag.textContent = '—';
-  payStatusEl.textContent = 'Not paid';
-}
-initUI();
-
-packageSelect.addEventListener('change', () => {
-  couponApplied = false;
-  couponInput.value = '';
-  appliedTag.textContent = '—';
-  const p = packageSelect.value;
-  const price = getPackagePrice(p);
-  currentFinal = price;
+// init UI
+function updateAmountUI(){
+  const pkg = packageSel.value || 'FULL_CAMP';
+  const price = PACKAGE_PRICING[pkg] || PACKAGE_PRICING.FULL_CAMP;
   totalFeeEl.textContent = price;
-  discountEl.textContent = '0';
-  payAmtEl.textContent = price;
-  sidePayEl.textContent = price;
+  if(couponApplied){
+    const discount = (PACKAGE_PRICING.FULL_CAMP - currentFinal);
+    discountEl.textContent = discount > 0 ? discount : '0';
+    payAmtEl.textContent = currentFinal;
+    sidePayEl.textContent = currentFinal;
+    appliedTag.textContent = couponCodeApplied.toUpperCase();
+  } else {
+    discountEl.textContent = '0';
+    payAmtEl.textContent = price;
+    sidePayEl.textContent = price;
+    appliedTag.textContent = '—';
+  }
+}
+
+// message helpers
+function hideMsgs(){ okMsg.style.display='none'; errMsg.style.display='none'; }
+function showOk(txt){ okMsg.textContent = txt; okMsg.style.display='block'; errMsg.style.display='none'; }
+function showError(txt){ errMsg.textContent = txt; errMsg.style.display='block'; okMsg.style.display='none'; }
+
+// package change updates price and resets coupon (coupon only for FULL_CAMP)
+packageSel.addEventListener('change', () => {
+  couponApplied = false;
+  couponCodeApplied = '';
+  currentFinal = PACKAGE_PRICING[packageSel.value] || PACKAGE_PRICING.FULL_CAMP;
+  updateAmountUI();
+  hideMsgs();
 });
 
-// apply coupon (server validation)
+// reset
+resetBtn.addEventListener('click', () => {
+  document.getElementById('regForm').reset();
+  couponApplied = false; couponCodeApplied = '';
+  currentFinal = PACKAGE_PRICING.FULL_CAMP;
+  updateAmountUI();
+  hideMsgs();
+});
+
+// apply coupon (server-side validation)
 applyBtn.addEventListener('click', async () => {
   hideMsgs();
   const code = (couponInput.value || '').trim();
-  if (!code) { showError('Enter coupon code'); return; }
-  const pkg = packageSelect.value || '';
+  const pkg = packageSel.value || 'FULL_CAMP';
   const email = (document.getElementById('email').value || '').trim();
-  const phone = (document.getElementById('phone').value || '').trim();
 
-  try {
+  if(!code){ showError('Enter a coupon code to apply.'); return; }
+  if(pkg !== 'FULL_CAMP'){ showError('Coupons apply only to Full camp registrations.'); return; }
+  if(!email){ showError('Enter email first (coupon validation needs your email).'); return; }
+
+  try{
     applyBtn.disabled = true;
     applyBtn.textContent = 'Checking...';
-    const url = `${WEB_APP_URL}?action=validateCoupon&coupon=${encodeURIComponent(code)}&package=${encodeURIComponent(pkg)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
-    const res = await fetch(url, { method: 'GET' });
-    const data = await res.json();
-    if (!data || !data.ok) throw new Error(data && data.error ? data.error : 'Invalid response');
-    if (data.valid) {
+    const resp = await fetch(`${WEB_APP_URL}?action=validateCoupon&coupon=${encodeURIComponent(code)}&package=${encodeURIComponent(pkg)}&email=${encodeURIComponent(email)}`, { method:'GET' });
+    const json = await resp.json();
+    if(!json || !json.ok){ throw new Error(json && json.error ? json.error : 'Invalid response'); }
+
+    if(json.valid){
       couponApplied = true;
-      const finalAmt = data.finalAmount || getPackagePrice(pkg);
-      currentFinal = finalAmt;
-      totalFeeEl.textContent = getPackagePrice(pkg);
-      discountEl.textContent = (getPackagePrice(pkg) - finalAmt).toString();
-      payAmtEl.textContent = finalAmt;
-      sidePayEl.textContent = finalAmt;
-      appliedTag.textContent = code.toUpperCase();
-      showOk('Coupon applied.');
+      couponCodeApplied = code.toUpperCase();
+      currentFinal = json.finalAmount || PACKAGE_PRICING.FULL_CAMP - 2000;
+      updateAmountUI();
+      showOk('Coupon applied. Amount updated.');
     } else {
-      couponApplied = false;
-      currentFinal = getPackagePrice(pkg);
-      totalFeeEl.textContent = getPackagePrice(pkg);
-      discountEl.textContent = '0';
-      payAmtEl.textContent = currentFinal;
-      sidePayEl.textContent = currentFinal;
-      appliedTag.textContent = '—';
-      showError(data.reason || 'Invalid coupon');
+      couponApplied = false; couponCodeApplied = '';
+      currentFinal = PACKAGE_PRICING.FULL_CAMP;
+      updateAmountUI();
+      showError(json.message || 'Coupon invalid or already used.');
     }
-  } catch (err) {
+  }catch(err){
     console.error('coupon check error', err);
-    showError('Coupon validation failed. Check your webapp URL & deployment.');
-  } finally {
+    showError('Coupon validation failed. Try again.');
+  }finally{
     applyBtn.disabled = false;
     applyBtn.textContent = 'Apply';
   }
 });
 
-// Pay button — simulate payment success for now (replace with PhonePe later)
-payBtn.addEventListener('click', async () => {
-  hideMsgs();
-  // validate essentials
+// basic client validation before payment
+function validateFormBeforePayment(){
   const name = (document.getElementById('name').value || '').trim();
   const email = (document.getElementById('email').value || '').trim();
-  const phone = (document.getElementById('phone').value || '').trim();
   const cop = (document.getElementById('cop').value || '').trim();
-  const pkg = (document.getElementById('package').value || '').trim();
-  if (!name || !email || !phone || !cop || !pkg) { showError('Complete name, email, phone, city and package before paying.'); return; }
-
-  // Simulate payment. Replace this block with real PhonePe checkout integration later.
-  const confirmed = confirm('Simulate payment success? Click OK to simulate success (replace this with PhonePe flow later).');
-  if (!confirmed) { showError('Payment cancelled by user'); return; }
-
-  // Payment succeeded — auto-submit registration
-  payStatusEl.textContent = 'Payment successful (simulated)';
-  await autoSubmitAfterPayment();
-});
-
-// After payment success — auto-post to your Apps Script
-// Replaces previous autoSubmitAfterPayment()
-// Sends application/x-www-form-urlencoded (no preflight)
-// Debug-friendly submit (use form-urlencoded to avoid preflight)
-async function autoSubmitAfterPayment(){
+  const phone = (document.getElementById('phone').value || '').trim();
+  if(!name || !email || !cop || !phone){ showError('Please complete Name, Email, Phone and City of Participation before paying.'); return false; }
+  if(!/^\d{10,}$/.test(phone)){ showError('Enter valid phone (10+ digits).'); return false; }
   hideMsgs();
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting...';
+  return true;
+}
 
-  // collect payload
+/* ----- PAYMENT FLOW ----- 
+   - Replace startPaymentFlow with your PhonePe integration when ready.
+   - The function should return { success:true, txnId: '...', finalAmount: <number> } on success.
+*/
+function startPaymentFlow(amountToPay){
+  return new Promise((resolve) => {
+    // Simple simulation confirmation prompt for testing
+    const ok = confirm(`Simulate payment of ₹${amountToPay}? (OK = success)`);
+    if(ok){
+      setTimeout(()=> resolve({ success:true, txnId:'SIM_TXN_' + Date.now(), finalAmount: amountToPay }), 600);
+    } else {
+      setTimeout(()=> resolve({ success:false }), 200);
+    }
+  });
+}
+
+// submit form to Apps Script backend (x-www-form-urlencoded)
+async function submitFormToServer(txnId){
+  hideMsgs();
+  payBtn.disabled = true;
+  const origText = payBtn.textContent;
+  payBtn.textContent = 'Processing...';
+
   const params = new URLSearchParams();
   params.append('name', (document.getElementById('name').value || '').trim());
   params.append('age', (document.getElementById('age').value || '').trim());
@@ -272,81 +301,71 @@ async function autoSubmitAfterPayment(){
   params.append('phone', (document.getElementById('phone').value || '').trim());
   params.append('insta', (document.getElementById('insta').value || '').trim());
   params.append('cop', (document.getElementById('cop').value || '').trim());
-  params.append('package', (document.getElementById('package') ? document.getElementById('package').value : '') );
-  params.append('couponApplied', couponApplied ? '1' : '0');
-  params.append('coupon', couponInput.value ? couponInput.value.trim().toUpperCase() : '');
+  params.append('package', (packageSel.value || 'FULL_CAMP'));
+  params.append('coupon', (couponApplied ? couponCodeApplied : ''));
+  params.append('couponApplied', (couponApplied ? '1' : '0'));
+  params.append('txnId', txnId || '');
 
   try {
     const res = await fetch(WEB_APP_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      method:'POST',
+      headers: { 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
       body: params.toString()
     });
 
-    // show status for debugging
-    console.log('Network response status:', res.status, res.statusText);
-    const ct = (res.headers.get('content-type') || '').toLowerCase();
-    console.log('Response content-type:', ct);
-
-    const text = await res.text(); // always read as text first
-    console.log('Raw response body:', text.slice(0, 2000)); // log up to 2000 chars
-
-    // If server returned JSON, parse it:
-    if (ct.includes('application/json') || text.trim().startsWith('{')) {
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (err) {
-        throw new Error('Response declared JSON but parsing failed: ' + err.message + '\nBody: ' + text.slice(0,2000));
-      }
-      if (!data.ok) throw new Error(data.error || 'Submission rejected by server');
-      showOk('Registration successful. Order: ' + (data.orderId || 'N/A'));
-      // optional: show any server-provided link
-      if (data.driveLink) {
-        fileInfo.innerHTML = `Saved: <a href="${data.driveLink}" target="_blank">${data.driveLink}</a>`;
-      }
-    } else {
-      // Not JSON — helpful debug message for you to paste here
-      throw new Error('Server returned non-JSON response (see console/network). Response preview:\n' + text.slice(0,3000));
+    const text = await res.text();
+    // try parse JSON
+    let json;
+    try { json = JSON.parse(text); } catch(e) {
+      throw new Error('Server returned non-JSON response. Check deployment & logs.\nPreview: ' + text.slice(0,2000));
     }
 
-  } catch (err) {
+    if(!json.ok) throw new Error(json.error || 'Submission failed on server.');
+    showOk('Registration successful — check your email. Order ID: ' + (json.orderId || 'N/A'));
+    payBtn.disabled = true;
+    payBtn.textContent = 'Paid';
+    return json;
+  } catch(err){
     console.error('submit error', err);
-    showError('Submission failed: ' + (err.message || err) + '\n\nCheck browser Network tab for the POST response and paste it here.');
+    showError('Submission failed: ' + (err.message || err));
+    throw err;
   } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Pay';
+    if(payBtn.textContent !== 'Paid'){
+      payBtn.disabled = false;
+      payBtn.textContent = origText || 'Pay';
+    }
   }
 }
 
-resetBtn.addEventListener('click', () => {
-  document.getElementById('regForm').reset();
-  couponInput.value = '';
-  couponApplied = false;
-  initUI();
-  hideMsgs();
-});
-
-// small helpers
-function getPackagePrice(code) {
-  const map = {
-    'FULL_CAMP': 8499,
-    '8_CLASSES': 7699,
-    '7_CLASSES': 6799,
-    '6_CLASSES': 5799,
-    '5_CLASSES': 4799,
-    '4_CLASSES': 3899,
-    '3_CLASSES': 2999,
-    '2_CLASSES': 2199,
-    'SINGLE_CLASS': 1200,
-    'AKSHAY_STAG': 1199,
-    'AKSHAY_COUPLE': 1999
-  };
-  return map[code] || 8499;
+// full flow: validate -> payment -> auto-submit
+async function autoSubmitAfterPayment(){
+  if(!validateFormBeforePayment()) return;
+  const amount = Number((document.getElementById('payAmt') || {}).textContent) || PACKAGE_PRICING.FULL_CAMP;
+  try {
+    payBtn.disabled = true;
+    payBtn.textContent = 'Opening payment...';
+    const p = await startPaymentFlow(amount);
+    if(!p || !p.success){ showError('Payment failed or cancelled.'); return; }
+    showOk('Payment successful — confirming registration...');
+    await submitFormToServer(p.txnId);
+  } catch(err){
+    console.error('autoSubmitAfterPayment error', err);
+    showError('Payment/Submission error: ' + (err.message || err));
+  }
 }
-function hideMsgs(){ okMsg.style.display='none'; errMsg.style.display='none'; }
-function showOk(txt){ okMsg.textContent = txt; okMsg.style.display='block'; errMsg.style.display='none'; }
-function showError(txt){ errMsg.textContent = txt; errMsg.style.display='block'; okMsg.style.display='none'; }
+
+// wire pay button
+if(payBtn){
+  payBtn.addEventListener('click', (ev) => { ev.preventDefault(); autoSubmitAfterPayment(); });
+} else {
+  console.warn('Pay button missing (id=payBtn).');
+}
+
+// init amounts
+(function init(){
+  currentFinal = PACKAGE_PRICING.FULL_CAMP;
+  updateAmountUI();
+})();
 </script>
 </body>
 </html>
