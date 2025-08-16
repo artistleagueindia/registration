@@ -255,54 +255,64 @@ payBtn.addEventListener('click', async () => {
 });
 
 // After payment success — auto-post to your Apps Script
+// Replaces previous autoSubmitAfterPayment()
+// Sends application/x-www-form-urlencoded (no preflight)
 async function autoSubmitAfterPayment(){
   hideMsgs();
   payBtn.disabled = true;
 
-  const payload = {
-    name: (document.getElementById('name').value || '').trim(),
-    age: (document.getElementById('age').value || '').trim(),
-    city: (document.getElementById('city').value || '').trim(),
-    email: (document.getElementById('email').value || '').trim(),
-    phone: (document.getElementById('phone').value || '').trim(),
-    insta: (document.getElementById('insta').value || '').trim(),
-    cop: (document.getElementById('cop').value || '').trim(),
-    package: (document.getElementById('package').value || '').trim(),
-    couponApplied: couponApplied ? '1' : '0',
-    coupon: couponApplied ? (couponInput.value || '').trim().toUpperCase() : ''
-  };
+  // collect payload as plain key=value strings
+  const params = new URLSearchParams();
+  params.append('name', (document.getElementById('name').value || '').trim());
+  params.append('age', (document.getElementById('age').value || '').trim());
+  params.append('city', (document.getElementById('city').value || '').trim());
+  params.append('email', (document.getElementById('email').value || '').trim());
+  params.append('phone', (document.getElementById('phone').value || '').trim());
+  params.append('insta', (document.getElementById('insta').value || '').trim());
+  params.append('cop', (document.getElementById('cop').value || '').trim());
+  params.append('package', (document.getElementById('package').value || '').trim());
+  params.append('couponApplied', couponApplied ? '1' : '0');
+  params.append('coupon', couponApplied ? (couponInput.value || '').trim().toUpperCase() : '');
 
   try {
-    // IMPORTANT: replace WEB_APP_URL with your exec URL and ensure deployment is "Anyone, even anonymous"
+    // IMPORTANT: WEB_APP_URL must be exact exec URL and Apps Script deployed "Anyone, even anonymous"
     const res = await fetch(WEB_APP_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: params.toString()
     });
 
-    // Helpful checks for debugging:
-    const ct = res.headers.get('content-type') || '';
-    if (!ct.includes('application/json')) {
-      const txt = await res.text();
-      console.error('Unexpected server response:', txt);
-      throw new Error('Server returned non-JSON response. Check webapp exec URL & Apps Script logs.');
+    // debug: network-level non-OK
+    if (!res.ok) {
+      const text = await res.text().catch(()=>'<no body>');
+      throw new Error('HTTP ' + res.status + ' - ' + text);
     }
 
+    // Apps Script should return JSON
+    const ct = (res.headers.get('content-type') || '');
+    if (!ct.includes('application/json')) {
+      const txt = await res.text();
+      throw new Error('Server returned non-JSON response. Response preview: ' + txt);
+    }
     const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Submission failed on server');
+    if (!data.ok) throw new Error(data.error || 'Server rejected submission');
 
     // success
     showOk('Registration successful — check your email. Order ID: ' + (data.orderId || 'N/A'));
     payStatusEl.textContent = 'Registration completed';
-    // optionally lock UI
     payBtn.disabled = true;
   } catch (err) {
     console.error('submit error', err);
-    // Provide actionable guidance
-    let msg = 'Submission failed: ' + (err.message || err);
-    msg += '\n\nCheck: (1) WEB_APP_URL is exact exec URL, (2) Apps Script deployed with "Anyone, even anonymous", (3) run installAuth() in Script Editor to grant scopes, (4) check Apps Script executions/logs for errors.';
+    let msg = 'Submission failed: ' + (err.message || err) + '\n\n';
+    msg += 'Checklist:\n';
+    msg += '1) WEB_APP_URL is the exact /exec URL.\n';
+    msg += '2) Apps Script deployment: Execute as = Me, Who has access = Anyone, even anonymous.\n';
+    msg += '3) Run installAuth() once in Script Editor to grant scopes.\n';
+    msg += '4) Check Apps Script Executions/Logs for server errors.\n';
+    msg += '\nOpen DevTools → Network tab and look for the POST request to see status / response details.';
     showError(msg);
-    // re-enable pay so user can retry
     payBtn.disabled = false;
   }
 }
