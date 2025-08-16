@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -23,11 +22,10 @@
   .calc{background:#0f1320;border:1px solid #2a314b;border-radius:12px;padding:12px;margin-top:12px}
   .calc .line{display:flex;justify-content:space-between;margin:6px 0}
   .calc .total{font-weight:700;font-size:18px}
-  .qrbox{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:12px}
-  .qrbox img{width:220px;height:220px;border-radius:12px;background:#fff;display:block}
   .okmsg{margin-top:12px;padding:10px;border-radius:10px;background:#0f1f14;border:1px solid #1e7d3b}
   .errmsg{margin-top:12px;padding:10px;border-radius:10px;background:#2a1414;border:1px solid #7d1e1e}
   .file-info{font-size:13px;color:var(--muted);margin-top:8px}
+  .small{font-size:12px;color:var(--muted)}
   @media (max-width:940px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -52,7 +50,7 @@
         <div class="row">
           <div>
             <label for="city">Current City</label>
-            <input id="city" name="city" />
+            <input id="city" name="city" placeholder="" />
           </div>
           <div>
             <label for="email">Email</label>
@@ -78,12 +76,28 @@
           <option value="PUNE">Pune</option>
         </select>
 
+        <label for="package">Choose package</label>
+        <select id="package" name="package" required>
+          <option value="FULL_CAMP">Full camp — ₹8499</option>
+          <option value="8_CLASSES">8 classes — ₹7699</option>
+          <option value="7_CLASSES">7 classes — ₹6799</option>
+          <option value="6_CLASSES">6 classes — ₹5799</option>
+          <option value="5_CLASSES">5 classes — ₹4799</option>
+          <option value="4_CLASSES">4 classes — ₹3899</option>
+          <option value="3_CLASSES">3 classes — ₹2999</option>
+          <option value="2_CLASSES">2 classes — ₹2199</option>
+          <option value="SINGLE_CLASS">Single class — ₹1200</option>
+          <option value="AKSHAY_STAG">Akshay x Manvi (Stag) — ₹1199</option>
+          <option value="AKSHAY_COUPLE">Akshay x Manvi (Couple) — ₹1999</option>
+        </select>
+
         <label>Coupon Code (optional)</label>
         <div class="coupon-bar">
+          <!-- intentionally no example text -->
           <input id="coupon" name="coupon" placeholder="" />
           <button class="btn" type="button" id="applyBtn">Apply</button>
         </div>
-        <div class="muted" style="margin-top:6px">Coupon list is private and validated server-side.</div>
+        <div class="muted small" style="margin-top:6px">Coupon list is private and validated server-side. Coupons apply only to full camp.</div>
 
         <div class="calc" id="calcBox">
           <div class="line"><span>Total fee</span><span>₹ <span id="totalFee">8499</span></span></div>
@@ -91,244 +105,253 @@
           <div class="line total"><span>Amount payable</span><span>₹ <span id="payAmt">8499</span></span></div>
         </div>
 
-        <label for="screenshot">Upload Payment Screenshot (required — ≤ 100 MB)</label>
-        <input id="screenshot" name="screenshot" type="file" accept="image/*,application/pdf" required />
-        <div class="file-info" id="fileInfo">No file chosen</div>
-
         <div class="okmsg" id="okMsg" style="display:none;"></div>
         <div class="errmsg" id="errMsg" style="display:none;"></div>
 
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="btn ok" type="submit" id="submitBtn">Submit Registration</button>
+          <!-- Pay button: user clicks to pay. Submit button is disabled until payment succeeds. -->
+          <button class="btn" type="button" id="payBtn">Pay</button>
+          <button class="btn ok" type="button" id="submitBtn" disabled>Submit Registration</button>
           <button class="btn secondary" type="button" id="resetBtn">Reset</button>
         </div>
       </form>
     </div>
 
-    <!-- RIGHT: payment box -->
+    <!-- RIGHT: info -->
     <div class="card">
-      <h1>Pay via UPI</h1>
-
-      <div class="muted" style="margin-bottom:8px">UPI ID: <span style="font-weight:700">yashmani1996@okhdfcbank</span>
-        <button class="btn secondary" type="button" id="copyUpi" style="margin-left:8px">Copy</button>
-      </div>
-
-      <div class="qrbox">
-        <div class="muted" id="qrLabel">Scan to pay ₹8499</div>
-
-        <!-- Embedded base64 QRs you provided -->
-        <img id="qr8499" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADhUlEQVR4nO2cXYqkShBGT4xCPyrM
-AnopuoNe0qxpdqBL6QUM6GNDSsxDRmpat+HCTBVdVfPFg5SlhzThI/7S1Jw/s/nbH4IgUqRIkSJF
-ihR5f6SFtZj1m+XDuJrB2uarsJa7xi9+WpF3SQ7u7r6A+9I4wwI+0bhZH//ZSOPu7n4mv+JpRd4l
-uRb/Mlt4H+Z+M+A4gJm11xtT5HOQ7cW5DUsP86vnXz6//WoNmgTrtcYU+eTk3APDe5tjWfl3K1nQ
-TcYU+RRk5+4TwLA0Dt2H2chmNq4vVRbk7ukenlbkHZKzmZn1+9/riwORXdu4tgCbRYV2nTFFPgmZ
-86F6waP7MOgSzD3mrJs5fBh052WRx5qnyFuTNgKlIfTiPq0t7kvcYyONH67KxquMKfJZSCLZ6RJx
-oDSJ6NKpcZTv87DpseYp8nYkIYklmorhfTr3yK5zZzFFmTYsjTQk8sJCEYBPxfFEmZZrtcYZPMGQ
-hbQTjzVPkbcjI0btixtVQJuO0OYpx7dYCZGGRNbmtRWpTPlahLGwEt/kh0Se7ciVK2c0LJRuIwBd
-ym4pnJE0JLK2EstKjIqcOkUEC+UQFVqkR9KQyMrCq3R15VUkFZl0PsDupaQhkbUdyVBpErkfSdFR
-l+XMKH5JQyIrO+RT+kPN3lRMe0lGTo/iFmlIZG0llnndmN7L+uKWqGp7aUjk2So/lCNYlk/4HDi9
-AVsCmjQksrKoy/Y8J05LL+jskdQfEvmJHe3FfDp1RVJTVy4MC7uXcmlI5IWFJJZ9vWyBsgRLfZqV
-A4plIi/s8EOxwrH7oTqTJuqySk2PNU+RtyNPax2n7Do6i52XDmR3ypukIZHFjlh2Wi87Dvub+F2d
-dktDIovt+8uaxPyaWvb9iD6/JjzvNPvZ55ts+Pm91GmPNU+RtyOzhozuw5y1KGruMei2FjAcUst+
-1Ybpq55W5D2S5/eHjg7Qf2r7yJa01iHyc/L47gdz/u4H2I/3Fua8wb7x7If2FfzHnKfIW5B7n9r9
-WOs4llZLmYb8kMj/I8t3P6o9rSOb5X2u9up5f1lse73SmCKfg7z87ofPbws2OMDa47M1Dqvh89gk
-QLFM5IVdaojhvU3A1vr8Vpf6Bps56/fkfzumyOciP82Hwqq9Qac2pPIhkSeL1DlbbOTIOXV+Lw2q
-1/Hrt/Mfa54ib0eavnEuUqRIkSJFivzHyd/mRZpyJ4jdeQAAAABJRU5ErkJggg==" alt="QR 8499">
-        <img id="qr6499" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADhUlEQVR4nO2cXYqkShBGT4xCPyrMAnopuoNe0qxpdqBL6QUM6GNDSsxDRmpat+HCTBVdVfPFg5SlhzThI/7S1Jw/s/nbH4IgUqRIkSJFihR5f6SFtZj1m+XDuJrB2uarsJa7xi9+WpF3SQ7u7r6A+9I4wwI+0bhZH//ZSOPu7n4mv+JpRd4luRb/Mlt4H+Z+M+A4gJm11xtT5HOQ7cW5DUsP86vnXz6//WoNmgTrtcYU+eTk3APDe5tjWfl3K1nQTcYU+RRk5+4TwLA0Dt2H2chmNq4vVRbk7ukenlbkHZKzmZn1+9/riwORXdu4tgCbRYV2nTFFPgmZ86F6waP7MOgSzD3mrJs5fBh052WRx5qnyFuTNgKlIfTiPq0t7kvcYyONH67KxquMKfJZSCLZ6RJxoDSJ6NKpcZTv87DpseYp8nYkIYklmorhfTr3yK5zZzFFmTYsjTQk8sJCEYBPxfFEmZZrtcYZPMGQhbQTjzVPkbcjI0btixtVQJuO0OYpx7dYCZGGRNbmtRWpTPlahLGwEt/kh0Se7ciVK2c0LJRuIwBdym4pnJE0JLK2EstKjIqcOkUEC+UQFVqkR9KQyMrCq3R15VUkFZl0PsDupaQhkbUdyVBpErkfSdFRl+XMKH5JQyIrO+RT+kPN3lRMe0lGTo/iFmlIZG0llnndmN7L+uKWqGp7aUjk2So/lCNYlk/4HDi9AVsCmjQksrKoy/Y8J05LL+jskdQfEvmJHe3FfDp1RVJTVy4MC7uXcmlI5IWFJJZ9vWyBsgRLfZqVA4plIi/s8EOxwrH7oTqTJuqySk2PNU+RtyNPax2n7Do6i52XDmR3ypukIZHFjlh2Wi87Dvub+F2ddktDIovt+8uaxPyaWvb9iD6/JjzvNPvZ55ts+Pm91GmPNU+RtyOzhozuw5y1KGruMei2FjAcUst+1Ybpq55W5D2S5/eHjg7Qf2r7yJa01iHyc/L47gdz/u4H2I/3Fua8wb7x7If2FfzHnKfIW5B7n9r9WOs4llZLmYb8kMj/I8t3P6o9rSOb5X2u9up5f1lse73SmCKfg7z87ofPbws2OMDa47M1Dqvh89gkQLFM5IVdaojhvU3A1vr8Vpf6Bps56/fkfzumyOciP82Hwqq9Qac2pPIhkSeL1DlbbOTIOXV+Lw2q1/Hrt/Mfa54ib0eavnEuUqRIkSJFivzHyd/mRZpyJ4jdeQAAAABJRU5ErkJggg==" alt="QR 6499" style="display:none">
-
-        <a id="upiLink" class="btn" href="#" target="_blank" rel="noopener">Open in UPI app</a>
-      </div>
+      <h1>Payment & Info</h1>
+      <div class="muted" style="margin-bottom:8px">Payment gateway: <strong>PhonePe (to integrate)</strong></div>
+      <div class="muted small" id="payStatus">Not paid</div>
 
       <div class="calc" style="margin-top:16px">
         <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
         <div class="line"><span>Payable now</span><span>₹ <span id="sidePay">8499</span></span></div>
       </div>
 
-      <div class="muted" style="margin-top:10px">Tip: If your phone can’t scan the QR it’s because the QR is on the same phone — use another phone to scan.</div>
+      <div style="margin-top:12px">
+        <h3 style="margin:8px 0">About us</h3>
+        <p class="small">Artist League — community-first live art education experiences across India. (Short about text. Will update full bio & logo per your assets.)</p>
+
+        <h3 style="margin:8px 0">Terms & policies</h3>
+        <p class="small">By registering you agree to our Terms & Conditions. Registrations are final — no refunds. Organizer may cancel or reschedule events; in such case a credit/alternate arrangement may be offered. Full policies will be provided on final page.</p>
+
+        <h3 style="margin:8px 0">Contact</h3>
+        <p class="small">Email: artistleagueindia@gmail.com<br>Phone: +91 9837816447</p>
+      </div>
+
     </div>
   </div>
 </div>
 
 <script>
-/* ---------- CONFIG - update WEB_APP_URL if you deploy to a different URL ---------- */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwB3BvpfRmrAyavT9xBZFVydaNflmVeB70L6FQS6HUGedCKKq7cPlNzpxZ_dcU36qVC/exec';
-const UPI_ID = 'yashmani1996@okhdfcbank';
-const PAYEE_NAME = 'Yash Mani';
+/* CLIENT SCRIPT
+ - Replace WEB_APP_URL below with your deployed Apps Script webapp exec URL.
+ - The Pay button currently simulates a successful payment (for testing).
+ - TODO: integrate real PhonePe flow in startPhonePePayment() and call on success submitRegistration()
+*/
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw-pHoFd7AxmfFqnPKA-26L4v3czzEkZOK6X23GG-ocQWvwaHTZlx1edU5AByzGQfpX/exec'; // <-- replace with your webapp exec URL
 const BASE_FEE = 8499;
 const DISC_FEE = 6499;
-const SUBMIT_MAX_BYTES = 100 * 1024 * 1024; // 100MB
 
-/* ---------- UI refs ---------- */
 const totalFeeEl = document.getElementById('totalFee');
 const discountEl = document.getElementById('discountAmt');
 const payAmtEl = document.getElementById('payAmt');
 const sidePayEl = document.getElementById('sidePay');
 const appliedTag = document.getElementById('appliedTag');
-const qrLabel = document.getElementById('qrLabel');
-
-const qr8499 = document.getElementById('qr8499');
-const qr6499 = document.getElementById('qr6499');
-const upiLink = document.getElementById('upiLink');
+const payStatusEl = document.getElementById('payStatus');
 
 const applyBtn = document.getElementById('applyBtn');
 const couponInput = document.getElementById('coupon');
-const screenshotInput = document.getElementById('screenshot');
-const fileInfo = document.getElementById('fileInfo');
+const packageSelect = document.getElementById('package');
+
+const payBtn = document.getElementById('payBtn');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
 
 const okMsg = document.getElementById('okMsg');
 const errMsg = document.getElementById('errMsg');
-const submitBtn = document.getElementById('submitBtn');
 
 let couponApplied = false;
 let currentFinal = BASE_FEE;
 
-/* ---------- init UI ---------- */
-totalFeeEl.textContent = BASE_FEE;
-discountEl.textContent = '0';
-payAmtEl.textContent = BASE_FEE;
-sidePayEl.textContent = BASE_FEE;
-appliedTag.textContent = '—';
-upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
-qr8499.style.display = 'block';
-qr6499.style.display = 'none';
+// initialize UI
+function initUI(){
+  const pkg = packageSelect.value || 'FULL_CAMP';
+  currentFinal = getPackagePrice(pkg);
+  totalFeeEl.textContent = getPackagePrice(pkg);
+  discountEl.textContent = '0';
+  payAmtEl.textContent = getPackagePrice(pkg);
+  sidePayEl.textContent = getPackagePrice(pkg);
+  appliedTag.textContent = '—';
+  payStatusEl.textContent = 'Not paid';
+  submitBtn.disabled = true;
+}
+initUI();
 
-/* ---------- helpers ---------- */
-function hideMsgs(){ okMsg.style.display='none'; errMsg.style.display='none'; }
-function showOk(txt){ okMsg.textContent = txt; okMsg.style.display = 'block'; errMsg.style.display = 'none'; }
-function showError(txt){ errMsg.textContent = txt; errMsg.style.display = 'block'; okMsg.style.display = 'none'; }
-
-/* ---------- copy UPI ---------- */
-document.getElementById('copyUpi').addEventListener('click', async () => {
-  try{ await navigator.clipboard.writeText(UPI_ID); showOk('UPI ID copied.'); } catch(e){ showError('Could not copy UPI ID.'); }
+packageSelect.addEventListener('change', () => {
+  // changing package removes coupon
+  couponApplied = false;
+  couponInput.value = '';
+  appliedTag.textContent = '—';
+  const p = packageSelect.value;
+  const price = getPackagePrice(p);
+  currentFinal = price;
+  totalFeeEl.textContent = price;
+  discountEl.textContent = '0';
+  payAmtEl.textContent = price;
+  sidePayEl.textContent = price;
 });
 
-/* ---------- file selection ---------- */
-screenshotInput.addEventListener('change', () => {
-  hideMsgs();
-  const f = screenshotInput.files[0];
-  if(!f){ fileInfo.textContent = 'No file chosen'; submitBtn.disabled = true; return; }
-  if(f.size > SUBMIT_MAX_BYTES){
-    fileInfo.textContent = `${f.name} (${Math.round(f.size/1024)} KB) — too large ( >100 MB ).`;
-    showError('File too large. Upload ≤ 100 MB.');
-    submitBtn.disabled = true;
-    return;
-  }
-  fileInfo.textContent = `${f.name} (${Math.round(f.size/1024)} KB) — ready`;
-  submitBtn.disabled = false;
-});
-
-/* ---------- coupon check (server-side) ---------- */
+// coupon apply (server validated)
 applyBtn.addEventListener('click', async () => {
   hideMsgs();
   const code = (couponInput.value || '').trim();
-  if(!code){ showError('Enter a coupon code to apply.'); return; }
+  if (!code) { showError('Enter coupon code'); return; }
+  // require package selection
+  const pkg = packageSelect.value || '';
+  if (!pkg) { showError('Select a package first'); return; }
+
+  // optional: pass email/phone so server can check reuse
+  const email = (document.getElementById('email').value || '').trim();
+  const phone = (document.getElementById('phone').value || '').trim();
 
   try {
     applyBtn.disabled = true;
     applyBtn.textContent = 'Checking...';
-    const res = await fetch(`${WEB_APP_URL}?action=validateCoupon&coupon=${encodeURIComponent(code)}`, { method:'GET' });
+    const url = `${WEB_APP_URL}?action=validateCoupon&coupon=${encodeURIComponent(code)}&package=${encodeURIComponent(pkg)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`;
+    const res = await fetch(url, { method: 'GET' });
     const data = await res.json();
-    if(!data || !data.ok) throw new Error(data && data.error ? data.error : 'Invalid response');
-
-    if(data.valid) {
+    if (!data || !data.ok) { throw new Error(data && data.error ? data.error : 'Invalid response'); }
+    if (data.valid) {
       couponApplied = true;
-      currentFinal = data.finalAmount || DISC_FEE;
-      totalFeeEl.textContent = BASE_FEE;
-      discountEl.textContent = (BASE_FEE - currentFinal).toString();
+      currentFinal = data.finalAmount || getPackagePrice(pkg);
+      totalFeeEl.textContent = getPackagePrice(pkg);
+      discountEl.textContent = (getPackagePrice(pkg) - currentFinal).toString();
       payAmtEl.textContent = currentFinal;
       sidePayEl.textContent = currentFinal;
       appliedTag.textContent = code.toUpperCase();
-      qr8499.style.display = 'none';
-      qr6499.style.display = 'block';
-      upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${currentFinal}&cu=INR`;
-      qrLabel.textContent = `Scan to pay ₹${currentFinal}`;
-      showOk('Coupon applied successfully.');
+      showOk('Coupon applied.');
     } else {
       couponApplied = false;
-      currentFinal = BASE_FEE;
-      totalFeeEl.textContent = BASE_FEE;
+      currentFinal = getPackagePrice(pkg);
+      totalFeeEl.textContent = getPackagePrice(pkg);
       discountEl.textContent = '0';
-      payAmtEl.textContent = BASE_FEE;
-      sidePayEl.textContent = BASE_FEE;
+      payAmtEl.textContent = currentFinal;
+      sidePayEl.textContent = currentFinal;
       appliedTag.textContent = '—';
-      qr8499.style.display = 'block';
-      qr6499.style.display = 'none';
-      upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
-      qrLabel.textContent = `Scan to pay ₹${BASE_FEE}`;
-      showError('Invalid coupon code.');
+      const reason = data.reason || 'Invalid coupon';
+      showError(reason);
     }
   } catch (err) {
     console.error('coupon check error', err);
-    showError('Coupon validation failed. Try again.');
+    showError('Coupon validation failed.');
   } finally {
     applyBtn.disabled = false;
     applyBtn.textContent = 'Apply';
   }
 });
 
-/* ---------- reset ---------- */
-document.getElementById('resetBtn').addEventListener('click', () => {
-  document.getElementById('regForm').reset();
+// Payment flow
+payBtn.addEventListener('click', async () => {
   hideMsgs();
-  couponApplied = false;
-  appliedTag.textContent = '—';
-  currentFinal = BASE_FEE;
-  totalFeeEl.textContent = BASE_FEE;
-  discountEl.textContent = '0';
-  payAmtEl.textContent = BASE_FEE;
-  sidePayEl.textContent = BASE_FEE;
-  qr8499.style.display = 'block';
-  qr6499.style.display = 'none';
-  upiLink.href = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${BASE_FEE}&cu=INR`;
-  fileInfo.textContent = 'No file chosen';
-  submitBtn.disabled = false;
-});
-
-/* ---------- submit ---------- */
-document.getElementById('regForm').addEventListener('submit', async (ev) => {
-  ev.preventDefault();
-  hideMsgs();
-
-  const file = screenshotInput.files[0];
-  if(!file){ showError('Upload payment screenshot. Submission disabled until file is selected.'); return; }
-  if(file.size > SUBMIT_MAX_BYTES){ showError('File too large (>100MB). Upload smaller file.'); return; }
-
+  // validate required fields before payment
   const name = (document.getElementById('name').value || '').trim();
   const email = (document.getElementById('email').value || '').trim();
+  const phone = (document.getElementById('phone').value || '').trim();
   const cop = (document.getElementById('cop').value || '').trim();
-  if(!name || !email || !cop){ showError('Complete name, email and city of participation.'); return; }
+  const pkg = (document.getElementById('package').value || '').trim();
+  if (!name || !email || !phone || !cop || !pkg) {
+    showError('Please complete name, email, phone, city and package before paying.');
+    return;
+  }
 
+  // TODO: Replace this simulated flow with PhonePe checkout integration.
+  // For now we simulate payment success with a confirm() so you can test end-to-end.
+  const confirmPay = confirm('Simulate payment success? (Press OK to simulate success)');
+  if (!confirmPay) { showError('Payment cancelled by user'); return; }
+
+  // On real integration you'd call PhonePe SDK/redirect and then on verified success call submitRegistration()
+  // For now assume payment succeeded:
+  payStatusEl.textContent = 'Payment successful (simulated)';
+  // enable submit and immediately submit registration to server (auto-submit after payment)
+  submitRegistration();
+});
+
+// Submit registration (sends JSON POST to server)
+async function submitRegistration(){
+  hideMsgs();
   submitBtn.disabled = true;
   submitBtn.textContent = 'Submitting...';
 
-  try {
-    const fd = new FormData(ev.target);
-    fd.append('finalAmountClient', couponApplied ? currentFinal : BASE_FEE);
-    fd.append('couponApplied', couponApplied ? '1' : '0');
+  const payload = {
+    name: (document.getElementById('name').value || '').trim(),
+    age: (document.getElementById('age').value || '').trim(),
+    city: (document.getElementById('city').value || '').trim(),
+    email: (document.getElementById('email').value || '').trim(),
+    phone: (document.getElementById('phone').value || '').trim(),
+    insta: (document.getElementById('insta').value || '').trim(),
+    cop: (document.getElementById('cop').value || '').trim(),
+    package: (document.getElementById('package').value || '').trim(),
+    couponApplied: couponApplied ? '1' : '0',
+    coupon: couponApplied ? (couponInput.value || '').trim().toUpperCase() : ''
+  };
 
-    const res = await fetch(WEB_APP_URL, { method: 'POST', body: fd });
-    const contentType = res.headers.get('content-type') || '';
-    if(!contentType.includes('application/json')) {
+  try {
+    const res = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) {
       const txt = await res.text();
-      console.error('Unexpected server response:', txt);
-      throw new Error('Server returned non-JSON response. Check deployment & logs.');
+      console.error('Server returned non-JSON:', txt);
+      throw new Error('Server returned non-JSON response. Check webapp logs.');
     }
     const data = await res.json();
-    if(!data.ok) throw new Error(data.error || 'Submission failed');
-
-    showOk(`Submitted. Final Amount: ₹${data.finalAmount || fd.get('finalAmountClient')}`);
-    if(data.driveLink) {
-      fileInfo.innerHTML = `File saved: <a href="${data.driveLink}" target="_blank" rel="noopener">${data.driveLink}</a>`;
-    }
-    screenshotInput.value = '';
-  } catch(err) {
+    if (!data.ok) throw new Error(data.error || 'Submission failed');
+    // success
+    showOk('Registration successful — check your email. Order ID: ' + (data.orderId || 'N/A'));
+    // optionally display order id somewhere
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitted';
+    payBtn.disabled = true;
+  } catch (err) {
     console.error('submit error', err);
     showError('Submission failed: ' + (err.message || err));
-  } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Registration';
   }
+}
+
+resetBtn.addEventListener('click', () => {
+  document.getElementById('regForm').reset();
+  couponInput.value = '';
+  couponApplied = false;
+  initUI();
+  hideMsgs();
 });
+
+// helpers
+function getPackagePrice(code) {
+  const map = {
+    'FULL_CAMP': 8499,
+    '8_CLASSES': 7699,
+    '7_CLASSES': 6799,
+    '6_CLASSES': 5799,
+    '5_CLASSES': 4799,
+    '4_CLASSES': 3899,
+    '3_CLASSES': 2999,
+    '2_CLASSES': 2199,
+    'SINGLE_CLASS': 1200,
+    'AKSHAY_STAG': 1199,
+    'AKSHAY_COUPLE': 1999
+  };
+  return map[code] || 8499;
+}
+function hideMsgs(){ okMsg.style.display='none'; errMsg.style.display='none'; }
+function showOk(txt){ okMsg.textContent = txt; okMsg.style.display='block'; errMsg.style.display='none'; }
+function showError(txt){ errMsg.textContent = txt; errMsg.style.display='block'; okMsg.style.display='none'; }
 </script>
 </body>
 </html>
