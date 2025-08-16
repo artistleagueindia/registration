@@ -257,11 +257,13 @@ payBtn.addEventListener('click', async () => {
 // After payment success — auto-post to your Apps Script
 // Replaces previous autoSubmitAfterPayment()
 // Sends application/x-www-form-urlencoded (no preflight)
+// Debug-friendly submit (use form-urlencoded to avoid preflight)
 async function autoSubmitAfterPayment(){
   hideMsgs();
-  payBtn.disabled = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
 
-  // collect payload as plain key=value strings
+  // collect payload
   const params = new URLSearchParams();
   params.append('name', (document.getElementById('name').value || '').trim());
   params.append('age', (document.getElementById('age').value || '').trim());
@@ -270,50 +272,50 @@ async function autoSubmitAfterPayment(){
   params.append('phone', (document.getElementById('phone').value || '').trim());
   params.append('insta', (document.getElementById('insta').value || '').trim());
   params.append('cop', (document.getElementById('cop').value || '').trim());
-  params.append('package', (document.getElementById('package').value || '').trim());
+  params.append('package', (document.getElementById('package') ? document.getElementById('package').value : '') );
   params.append('couponApplied', couponApplied ? '1' : '0');
-  params.append('coupon', couponApplied ? (couponInput.value || '').trim().toUpperCase() : '');
+  params.append('coupon', couponInput.value ? couponInput.value.trim().toUpperCase() : '');
 
   try {
-    // IMPORTANT: WEB_APP_URL must be exact exec URL and Apps Script deployed "Anyone, even anonymous"
     const res = await fetch(WEB_APP_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: params.toString()
     });
 
-    // debug: network-level non-OK
-    if (!res.ok) {
-      const text = await res.text().catch(()=>'<no body>');
-      throw new Error('HTTP ' + res.status + ' - ' + text);
+    // show status for debugging
+    console.log('Network response status:', res.status, res.statusText);
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    console.log('Response content-type:', ct);
+
+    const text = await res.text(); // always read as text first
+    console.log('Raw response body:', text.slice(0, 2000)); // log up to 2000 chars
+
+    // If server returned JSON, parse it:
+    if (ct.includes('application/json') || text.trim().startsWith('{')) {
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        throw new Error('Response declared JSON but parsing failed: ' + err.message + '\nBody: ' + text.slice(0,2000));
+      }
+      if (!data.ok) throw new Error(data.error || 'Submission rejected by server');
+      showOk('Registration successful. Order: ' + (data.orderId || 'N/A'));
+      // optional: show any server-provided link
+      if (data.driveLink) {
+        fileInfo.innerHTML = `Saved: <a href="${data.driveLink}" target="_blank">${data.driveLink}</a>`;
+      }
+    } else {
+      // Not JSON — helpful debug message for you to paste here
+      throw new Error('Server returned non-JSON response (see console/network). Response preview:\n' + text.slice(0,3000));
     }
 
-    // Apps Script should return JSON
-    const ct = (res.headers.get('content-type') || '');
-    if (!ct.includes('application/json')) {
-      const txt = await res.text();
-      throw new Error('Server returned non-JSON response. Response preview: ' + txt);
-    }
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Server rejected submission');
-
-    // success
-    showOk('Registration successful — check your email. Order ID: ' + (data.orderId || 'N/A'));
-    payStatusEl.textContent = 'Registration completed';
-    payBtn.disabled = true;
   } catch (err) {
     console.error('submit error', err);
-    let msg = 'Submission failed: ' + (err.message || err) + '\n\n';
-    msg += 'Checklist:\n';
-    msg += '1) WEB_APP_URL is the exact /exec URL.\n';
-    msg += '2) Apps Script deployment: Execute as = Me, Who has access = Anyone, even anonymous.\n';
-    msg += '3) Run installAuth() once in Script Editor to grant scopes.\n';
-    msg += '4) Check Apps Script Executions/Logs for server errors.\n';
-    msg += '\nOpen DevTools → Network tab and look for the POST request to see status / response details.';
-    showError(msg);
-    payBtn.disabled = false;
+    showError('Submission failed: ' + (err.message || err) + '\n\nCheck browser Network tab for the POST response and paste it here.');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Pay';
   }
 }
 
