@@ -1,11 +1,10 @@
-Index.html
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Artist League Camp 2025 — Registration</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root{--bg:#0b0b10;--card:#141420;--text:#f5f7ff;--muted:#a8acc3;--accent:#5b8cff;--ok:#1db954;--warn:#ffb020}
     body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text)}
@@ -139,7 +138,7 @@ Index.html
         <div class="okmsg" id="okMsg" style="display:none;"></div>
         <div class="errmsg" id="errMsg" style="display:none;"></div>
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button id="payBtn" class="btn" type="button">Pay with PhonePe</button>
+          <button id="payBtn" class="btn" type="button">Pay with Razorpay</button>
           <button class="btn secondary" type="button" id="resetBtn">Reset</button>
         </div>
       </form>
@@ -172,8 +171,7 @@ Index.html
 
 <script>
 /* ================= CONFIG - set your Apps Script webapp exec URL here ================= */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbybvsiowEpOKSg2bGbgSX2DNsxW-dhUMj5oCzClcWiEDb65ifHZQNPCuQ2Nw2llavjAdA/exec';
-// If you change webapp, update this value.
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbybvsiowEpOKSg2bGbgSX2DNsxW-dhUMj5oCzClcWiEDb65ifHZQNPCuQ2Nw2llavjAdA/exec'; // e.g. https://script.google.com/macros/s/AKfy.../exec
 /* Replace the old PACKAGE_PRICING with this (all keys that start with digits are quoted) */
 const PACKAGE_PRICING = {
   "FULL_CAMP": 8499,
@@ -309,92 +307,8 @@ function validateFormBeforePayment(){
   return true;
 }
 
-// Check if this is a callback from PhonePe
-const urlParams = new URLSearchParams(window.location.search);
-const phonepeTransactionId = urlParams.get('transactionId');
-const phonepeStatus = urlParams.get('status');
-
-// If we have a transaction ID, this is a callback from PhonePe
-if(phonepeTransactionId) {
-  // Retrieve form data from sessionStorage
-  const formDataStr = sessionStorage.getItem('registrationFormData');
-  if(formDataStr) {
-    try {
-      const formData = JSON.parse(formDataStr);
-      
-      // Verify payment with server
-      (async function() {
-        try {
-          showLoading();
-          showOk('Verifying payment...');
-          
-          const verifyData = new FormData();
-          verifyData.append('action', 'verifyPhonePePayment');
-          verifyData.append('transactionId', phonepeTransactionId);
-          
-          const response = await fetch(WEB_APP_URL, {
-            method: 'POST',
-            body: verifyData
-          });
-          
-          const result = await response.json();
-          hideLoading();
-          
-          if(result.success && result.verified) {
-            // Payment verified, submit the form
-            showOk('Payment verified — completing registration...');
-            
-            const submitData = new URLSearchParams();
-            submitData.append('name', formData.name);
-            submitData.append('age', formData.age);
-            submitData.append('city', formData.city);
-            submitData.append('email', formData.email);
-            submitData.append('phone', formData.phone);
-            submitData.append('insta', formData.insta);
-            submitData.append('cop', formData.cop);
-            submitData.append('package', formData.package);
-            submitData.append('coupon', formData.coupon);
-            submitData.append('couponApplied', formData.couponApplied);
-            submitData.append('txnId', phonepeTransactionId);
-            
-            const submitResponse = await fetch(WEB_APP_URL, {
-              method:'POST',
-              headers: { 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
-              body: submitData.toString()
-            });
-            
-            const submitResult = await submitResponse.json();
-            
-            if(submitResult.ok) {
-              showOk('Registration successful — check your email. Order ID: ' + (submitResult.orderId || 'N/A'));
-              // Clean up
-              sessionStorage.removeItem('registrationFormData');
-              // Remove URL parameters
-              window.history.replaceState({}, document.title, window.location.pathname);
-            } else {
-              showError('Registration failed: ' + (submitResult.error || 'Unknown error'));
-            }
-          } else {
-            showError('Payment verification failed: ' + (result.error || 'Payment was not successful'));
-          }
-        } catch(err) {
-          console.error('Payment verification error:', err);
-          hideLoading();
-          showError('Payment verification failed: ' + (err.message || err));
-        }
-      })();
-    } catch(err) {
-      console.error('Error parsing form data:', err);
-      hideLoading();
-      showError('Error processing payment callback');
-    }
-  } else {
-    showError('Form data not found. Please start over.');
-  }
-}
-
 // Submit form to Apps Script backend (x-www-form-urlencoded)
-async function submitFormToServer(txnId){
+async function submitFormToServer(txn){
   hideMsgs();
   payBtn.disabled = true;
   const origText = payBtn.textContent;
@@ -410,7 +324,12 @@ async function submitFormToServer(txnId){
   params.append('package', (packageSel.value || 'FULL_CAMP'));
   params.append('coupon', (couponApplied ? couponCodeApplied : ''));
   params.append('couponApplied', (couponApplied ? '1' : '0'));
-  params.append('txnId', txnId || '');
+  // txn contains { razorpay_payment_id, razorpay_order_id, razorpay_signature }
+  if(txn){
+    params.append('txnId', txn.razorpay_payment_id || txn.payment_id || '');
+    params.append('rp_order_id', txn.razorpay_order_id || txn.order_id || '');
+    params.append('rp_signature', txn.razorpay_signature || txn.signature || '');
+  }
   try {
     const res = await fetch(WEB_APP_URL, {
       method:'POST',
@@ -435,13 +354,13 @@ async function submitFormToServer(txnId){
   } finally {
     if(payBtn.textContent !== 'Paid'){
       payBtn.disabled = false;
-      payBtn.textContent = origText || 'Pay with PhonePe';
+      payBtn.textContent = origText || 'Pay with Razorpay';
     }
   }
 }
 
-// full flow: validate -> payment -> auto-submit
-async function autoSubmitAfterPayment(){
+// Razorpay checkout flow
+async function startRazorpayCheckout(){
   if(!validateFormBeforePayment()) return;
   const amount = Number((document.getElementById('payAmt') || {}).textContent) || PACKAGE_PRICING.FULL_CAMP;
   
@@ -450,59 +369,91 @@ async function autoSubmitAfterPayment(){
     payBtn.disabled = true;
     payBtn.textContent = 'Creating payment...';
     
-    // Create PhonePe order
-    const formData = new FormData();
-    formData.append('action', 'createPhonePeOrder');
-    formData.append('amount', amount);
-    formData.append('name', (document.getElementById('name').value || '').trim());
-    formData.append('email', (document.getElementById('email').value || '').trim());
-    formData.append('phone', (document.getElementById('phone').value || '').trim());
-    
+    // Create Razorpay order on server
     const response = await fetch(WEB_APP_URL, {
       method: 'POST',
-      body: formData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'create-order',
+        amountPaise: Math.round(amount * 100),
+        currency: 'INR',
+        receipt: 'rcpt_' + Date.now(),
+        notes: { from: 'github-pages' }
+      })
     });
     
     const data = await response.json();
-    
-    if(data.success && data.paymentUrl) {
-      // Store form data in sessionStorage to retrieve after payment
-      const formDataObj = {
-        name: (document.getElementById('name').value || '').trim(),
-        age: (document.getElementById('age').value || '').trim(),
-        city: (document.getElementById('city').value || '').trim(),
-        email: (document.getElementById('email').value || '').trim(),
-        phone: (document.getElementById('phone').value || '').trim(),
-        insta: (document.getElementById('insta').value || '').trim(),
-        cop: (document.getElementById('cop').value || '').trim(),
-        package: (packageSel.value || 'FULL_CAMP'),
-        coupon: (couponApplied ? couponCodeApplied : ''),
-        couponApplied: (couponApplied ? '1' : '0'),
-        amount: amount
-      };
-      
-      sessionStorage.setItem('registrationFormData', JSON.stringify(formDataObj));
-      
-      // Redirect to PhonePe
-      window.location.href = data.paymentUrl;
-    } else {
-      hideLoading();
-      showError('Failed to create payment: ' + (data.error || 'Unknown error'));
-      payBtn.disabled = false;
-      payBtn.textContent = 'Pay with PhonePe';
+    if(!data || !data.ok || !data.order) {
+      throw new Error((data && (data.error || JSON.stringify(data))) || 'Failed to create order');
     }
+    
+    const order = data.order;
+    const key_id = data.key_id;
+    
+    const options = {
+      key: key_id,
+      amount: order.amount,
+      currency: order.currency,
+      name: 'Artist League',
+      description: 'Camp Registration',
+      order_id: order.id,
+      prefill: { name: (document.getElementById('name').value||''), email: (document.getElementById('email').value||''), contact: (document.getElementById('phone').value||'') },
+      handler: async function (response) {
+        // response: { razorpay_payment_id, razorpay_order_id, razorpay_signature }
+        showOk('Payment success, verifying…');
+        try {
+          // Server-side verify signature
+          const verifyResp = await fetch(WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type':'application/json' },
+            body: JSON.stringify({
+              action: 'verify-signature',
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            })
+          });
+          const verifyJson = await verifyResp.json();
+          if(verifyJson && verifyJson.ok) {
+            // signature OK — submit registration to server with txn info
+            await submitFormToServer({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+            });
+            hideLoading();
+          } else {
+            hideLoading();
+            showError('Signature verification failed — please contact support.');
+          }
+        } catch(err){
+          hideLoading();
+          console.error('verify error', err);
+          showError('Verification request failed.');
+        }
+      },
+      theme: { color: '#111111' }
+    };
+    
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (resp) {
+      hideLoading();
+      showError('Payment failed: ' + (resp.error && resp.error.description));
+    });
+    rzp.open();
   } catch(err) {
     console.error('Payment initiation error:', err);
     hideLoading();
     showError('Payment initiation failed: ' + (err.message || err));
+  } finally {
     payBtn.disabled = false;
-    payBtn.textContent = 'Pay with PhonePe';
+    payBtn.textContent = 'Pay with Razorpay';
   }
 }
 
 // wire pay button
 if(payBtn){
-  payBtn.addEventListener('click', (ev) => { ev.preventDefault(); autoSubmitAfterPayment(); });
+  payBtn.addEventListener('click', (ev) => { ev.preventDefault(); startRazorpayCheckout(); });
 } else {
   console.warn('Pay button missing (id=payBtn).');
 }
