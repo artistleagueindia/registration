@@ -1,3 +1,5 @@
+Index.html
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,77 +29,39 @@
     .sidebar { color:var(--muted) }
     .logo { width:120px; height:auto; display:block; margin-bottom:12px }
     @media (max-width:940px){.grid{grid-template-columns:1fr}}
-    
-    /* QR Code Styles */
-    .qr-container {
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 11, 16, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(91, 140, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .hidden {
       display: none;
-      margin-top: 20px;
-      text-align: center;
-      padding: 15px;
-      background: #0f1320;
+    }
+    /* Banner styles */
+    .banner {
+      width: 100%;
+      height: 200px;
       border-radius: 12px;
-      border: 1px solid #2a314b;
-    }
-    .qr-container.active {
-      display: block;
-    }
-    .qr-code {
-      margin: 15px auto;
-      padding: 10px;
-      background: white;
-      border-radius: 8px;
-      display: inline-block;
-    }
-    .qr-code img {
-      display: block;
-    }
-    .qr-info {
-      margin-top: 10px;
-      font-size: 14px;
-    }
-    .qr-amount {
-      font-weight: bold;
-      color: var(--ok);
-      font-size: 18px;
-      margin: 10px 0;
-    }
-    .qr-note {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-    .qr-upi-link {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 12px;
-      background: var(--accent);
-      color: white;
-      border-radius: 6px;
-      text-decoration: none;
-    }
-    .qr-upi-link:hover {
-      background: #4a7ce8;
-    }
-    
-    /* Registration Complete Styles */
-    .registration-complete {
-      display: none;
-      margin-top: 20px;
-      padding: 20px;
-      background: #0f1f14;
-      border: 1px solid #1e7d3b;
-      border-radius: 12px;
-      text-align: center;
-    }
-    .registration-complete.active {
-      display: block;
-    }
-    .registration-complete h2 {
-      color: var(--ok);
-      margin-top: 0;
-    }
-    .registration-complete p {
-      margin-bottom: 10px;
+      object-fit: cover;
+      margin-bottom: 18px;
     }
   </style>
 </head>
@@ -106,6 +70,9 @@
   <div class="grid">
     <!-- LEFT: form -->
     <div class="card">
+      <!-- Banner image -->
+      <img id="bannerImage" class="banner" src="banner.png" alt="Artist League Camp Banner">
+      
       <h1>Artist League Camp 2025 — Registration</h1>
       <form id="regForm" autocomplete="on" novalidate>
         <div class="row">
@@ -171,33 +138,8 @@
         </div>
         <div class="okmsg" id="okMsg" style="display:none;"></div>
         <div class="errmsg" id="errMsg" style="display:none;"></div>
-        
-        <!-- QR Code Container -->
-        <div id="qrContainer" class="qr-container">
-          <h3>Complete Your Payment</h3>
-          <p>Scan the QR code below to pay the registration fee</p>
-          <div class="qr-amount">Amount: ₹<span id="qrAmount">8499</span></div>
-          <div class="qr-code">
-            <img id="qrImage" src="" alt="Payment QR Code" />
-          </div>
-          <div class="qr-info">
-            <p>Pay to: <strong>Artist League</strong></p>
-            <p>UPI ID: <strong>yashmani1996@okhdfcbank</strong></p>
-            <a id="qrUpiLink" href="#" target="_blank" class="qr-upi-link">Pay via UPI App</a>
-          </div>
-          <p class="qr-note">After payment, please take a screenshot and upload it using the button below.</p>
-          <button id="screenshotBtn" class="btn ok" type="button">Upload Payment Screenshot</button>
-        </div>
-        
-        <!-- Registration Complete Message -->
-        <div id="registrationComplete" class="registration-complete">
-          <h2>Registration Complete!</h2>
-          <p>Thank you for your payment and registration.</p>
-          <p>Please check your email for confirmation details.</p>
-        </div>
-        
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button id="payBtn" class="btn" type="button">Pay</button>
+          <button id="payBtn" class="btn" type="button">Pay with PhonePe</button>
           <button class="btn secondary" type="button" id="resetBtn">Reset</button>
         </div>
       </form>
@@ -206,34 +148,32 @@
     <div class="card sidebar">
       <!-- logo placeholder: paste your logo into src when ready -->
       <img id="logo" class="logo" src="" alt="Artist League logo" style="display:none">
-      <h1 style="font-size:16px;margin-top:0">Registration Summary</h1>
+      <h1 style="font-size:16px;margin-top:0">Payment summary</h1>
       <div class="calc" style="margin-top:6px">
         <div class="line"><span>Applied coupon</span><span id="appliedTag">—</span></div>
         <div class="line"><span>Payable now</span><span>₹ <span id="sidePay">8499</span></span></div>
       </div>
       <h2 style="margin-top:18px">About us</h2>
-      <p>Artist League — community-first live art education experiences across India.</p>
+      <p>Artist League (since 2016) — community-first live art education experiences across India. Organising Dance Camps, Training Programs , Retreats & What not . </p>
       <h2 style="margin-top:12px">Terms & policies</h2>
-      <p>By registering you agree to our Terms & Conditions. Registrations are final — no refunds. Organizer may cancel or reschedule events; in such case a credit or alternate arrangement may be offered.</p>
+      <p>By registering you agree to our <a href="https://artistleagueindia.github.io/terms/"> Terms & Conditions </a> & <a href="https://artistleagueindia.github.io/Policies/"> Policies </a>. Registrations are final — no refunds. Organizer may cancel or reschedule events; in such case a credit or alternate arrangement may be offered. Full policies will be provided on the final confirmation page and in email.</p>
       <h2 style="margin-top:12px">Contact</h2>
       <p style="margin-bottom:4px">Email: artistleagueindia@gmail.com</p>
+      <p>Director: Yashmani Shakya</p>
       <p>Phone: +91 9837816447</p>
     </div>
   </div>
 </div>
+
+<!-- Loading overlay -->
+<div id="loadingOverlay" class="loading-overlay hidden">
+  <div class="loading-spinner"></div>
+</div>
+
 <script>
 /* ================= CONFIG - set your Apps Script webapp exec URL here ================= */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz5tJslGTr1_xV7j-b_8uNTNvtGXNq8TFwZPNm5AoAenOokeFrWG7Li6_6gY_fjl5nLvA/exec'; // Update this with your web app URL
-const GOOGLE_FORM_URL = 'https://forms.gle/KX75aQhdpPFk7BLo7';
-const MAIN_PAGE_URL = 'https://artistleagueindia.github.io/registration/'; // Update this with your web app URL
-
-/* UPI Payment Configuration */
-const UPI_CONFIG = {
-  ID: 'yashmani1996@okhdfcbank',
-  NAME: 'Artist League',
-  NOTE: 'Registration Fee'
-};
-
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz5tJslGTr1_xV7j-b_8uNTNvtGXNq8TFwZPNm5AoAenOokeFrWG7Li6_6gY_fjl5nLvA/exec';
+// If you change webapp, update this value.
 /* Replace the old PACKAGE_PRICING with this (all keys that start with digits are quoted) */
 const PACKAGE_PRICING = {
   "FULL_CAMP": 8499,
@@ -249,6 +189,7 @@ const PACKAGE_PRICING = {
   "AKSHAY_COUPLE": 1999
 };
 
+// DOM elements
 const totalFeeEl = document.getElementById('totalFee');
 const discountEl = document.getElementById('discountAmt');
 const payAmtEl = document.getElementById('payAmt');
@@ -261,17 +202,22 @@ const okMsg = document.getElementById('okMsg');
 const errMsg = document.getElementById('errMsg');
 const payBtn = document.getElementById('payBtn');
 const resetBtn = document.getElementById('resetBtn');
-const screenshotBtn = document.getElementById('screenshotBtn');
 const logoImg = document.getElementById('logo');
-const qrContainer = document.getElementById('qrContainer');
-const qrImage = document.getElementById('qrImage');
-const qrAmount = document.getElementById('qrAmount');
-const qrUpiLink = document.getElementById('qrUpiLink');
-const registrationComplete = document.getElementById('registrationComplete');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const bannerImage = document.getElementById('bannerImage');
+
 let couponApplied = false;
 let couponCodeApplied = '';
 let currentFinal = PACKAGE_PRICING.FULL_CAMP;
-let orderId = '';
+
+// Show/hide loading overlay
+function showLoading() {
+  loadingOverlay.classList.remove('hidden');
+}
+
+function hideLoading() {
+  loadingOverlay.classList.add('hidden');
+}
 
 // init UI
 function updateAmountUI(){
@@ -290,54 +236,6 @@ function updateAmountUI(){
     sidePayEl.textContent = price;
     appliedTag.textContent = '—';
   }
-  
-  // Update QR amount if QR is visible
-  if (qrContainer.classList.contains('active')) {
-    updateQrCode();
-  }
-}
-
-// Generate UPI payment string
-function generateUpiString(amount) {
-  return `upi://pay?pa=${UPI_CONFIG.ID}&pn=${encodeURIComponent(UPI_CONFIG.NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(UPI_CONFIG.NOTE)}`;
-}
-
-// Update QR code with current amount
-function updateQrCode() {
-  const amount = currentFinal;
-  const upiString = generateUpiString(amount);
-  const qrSize = 200;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(upiString)}`;
-  
-  qrImage.src = qrUrl;
-  qrAmount.textContent = amount;
-  qrUpiLink.href = upiString;
-}
-
-// Show QR code
-function showQrCode() {
-  updateQrCode();
-  qrContainer.classList.add('active');
-  screenshotBtn.disabled = false;
-  window.scrollTo(0, qrContainer.offsetTop);
-}
-
-// Hide QR code
-function hideQrCode() {
-  qrContainer.classList.remove('active');
-  screenshotBtn.disabled = true;
-}
-
-// Show registration complete message
-function showRegistrationComplete() {
-  hideQrCode();
-  registrationComplete.classList.add('active');
-  window.scrollTo(0, registrationComplete.offsetTop);
-}
-
-// Hide registration complete message
-function hideRegistrationComplete() {
-  registrationComplete.classList.remove('active');
 }
 
 // message helpers
@@ -352,8 +250,6 @@ packageSel.addEventListener('change', () => {
   currentFinal = PACKAGE_PRICING[packageSel.value] || PACKAGE_PRICING.FULL_CAMP;
   updateAmountUI();
   hideMsgs();
-  hideQrCode();
-  hideRegistrationComplete();
 });
 
 // reset
@@ -363,18 +259,11 @@ resetBtn.addEventListener('click', () => {
   currentFinal = PACKAGE_PRICING.FULL_CAMP;
   updateAmountUI();
   hideMsgs();
-  hideQrCode();
-  hideRegistrationComplete();
-  screenshotBtn.disabled = true;
-  payBtn.disabled = false;
-  payBtn.textContent = 'Pay';
 });
 
 // apply coupon (server-side validation)
 applyBtn.addEventListener('click', async () => {
   hideMsgs();
-  hideQrCode();
-  hideRegistrationComplete();
   const code = (couponInput.value || '').trim();
   const pkg = packageSel.value || 'FULL_CAMP';
   const email = (document.getElementById('email').value || '').trim();
@@ -420,8 +309,92 @@ function validateFormBeforePayment(){
   return true;
 }
 
-// submit form to Apps Script backend (x-www-form-urlencoded)
-async function submitFormToServer(){
+// Check if this is a callback from PhonePe
+const urlParams = new URLSearchParams(window.location.search);
+const phonepeTransactionId = urlParams.get('transactionId');
+const phonepeStatus = urlParams.get('status');
+
+// If we have a transaction ID, this is a callback from PhonePe
+if(phonepeTransactionId) {
+  // Retrieve form data from sessionStorage
+  const formDataStr = sessionStorage.getItem('registrationFormData');
+  if(formDataStr) {
+    try {
+      const formData = JSON.parse(formDataStr);
+      
+      // Verify payment with server
+      (async function() {
+        try {
+          showLoading();
+          showOk('Verifying payment...');
+          
+          const verifyData = new FormData();
+          verifyData.append('action', 'verifyPhonePePayment');
+          verifyData.append('transactionId', phonepeTransactionId);
+          
+          const response = await fetch(WEB_APP_URL, {
+            method: 'POST',
+            body: verifyData
+          });
+          
+          const result = await response.json();
+          hideLoading();
+          
+          if(result.success && result.verified) {
+            // Payment verified, submit the form
+            showOk('Payment verified — completing registration...');
+            
+            const submitData = new URLSearchParams();
+            submitData.append('name', formData.name);
+            submitData.append('age', formData.age);
+            submitData.append('city', formData.city);
+            submitData.append('email', formData.email);
+            submitData.append('phone', formData.phone);
+            submitData.append('insta', formData.insta);
+            submitData.append('cop', formData.cop);
+            submitData.append('package', formData.package);
+            submitData.append('coupon', formData.coupon);
+            submitData.append('couponApplied', formData.couponApplied);
+            submitData.append('txnId', phonepeTransactionId);
+            
+            const submitResponse = await fetch(WEB_APP_URL, {
+              method:'POST',
+              headers: { 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
+              body: submitData.toString()
+            });
+            
+            const submitResult = await submitResponse.json();
+            
+            if(submitResult.ok) {
+              showOk('Registration successful — check your email. Order ID: ' + (submitResult.orderId || 'N/A'));
+              // Clean up
+              sessionStorage.removeItem('registrationFormData');
+              // Remove URL parameters
+              window.history.replaceState({}, document.title, window.location.pathname);
+            } else {
+              showError('Registration failed: ' + (submitResult.error || 'Unknown error'));
+            }
+          } else {
+            showError('Payment verification failed: ' + (result.error || 'Payment was not successful'));
+          }
+        } catch(err) {
+          console.error('Payment verification error:', err);
+          hideLoading();
+          showError('Payment verification failed: ' + (err.message || err));
+        }
+      })();
+    } catch(err) {
+      console.error('Error parsing form data:', err);
+      hideLoading();
+      showError('Error processing payment callback');
+    }
+  } else {
+    showError('Form data not found. Please start over.');
+  }
+}
+
+// Submit form to Apps Script backend (x-www-form-urlencoded)
+async function submitFormToServer(txnId){
   hideMsgs();
   payBtn.disabled = true;
   const origText = payBtn.textContent;
@@ -437,6 +410,7 @@ async function submitFormToServer(){
   params.append('package', (packageSel.value || 'FULL_CAMP'));
   params.append('coupon', (couponApplied ? couponCodeApplied : ''));
   params.append('couponApplied', (couponApplied ? '1' : '0'));
+  params.append('txnId', txnId || '');
   try {
     const res = await fetch(WEB_APP_URL, {
       method:'POST',
@@ -450,86 +424,96 @@ async function submitFormToServer(){
       throw new Error('Server returned non-JSON response. Check deployment & logs.\nPreview: ' + text.slice(0,2000));
     }
     if(!json.ok) throw new Error(json.error || 'Submission failed on server.');
-    
-    // Store order ID for later use
-    orderId = json.orderId || '';
-    
-    showOk('Registration initiated! Order ID: ' + orderId);
+    showOk('Registration successful — check your email. Order ID: ' + (json.orderId || 'N/A'));
     payBtn.disabled = true;
-    payBtn.textContent = 'Registered';
-    
-    // Show QR code for payment
-    showQrCode();
-    
+    payBtn.textContent = 'Paid';
     return json;
   } catch(err){
     console.error('submit error', err);
     showError('Submission failed: ' + (err.message || err));
     throw err;
   } finally {
-    if(payBtn.textContent !== 'Registered'){
+    if(payBtn.textContent !== 'Paid'){
       payBtn.disabled = false;
-      payBtn.textContent = origText || 'Pay';
+      payBtn.textContent = origText || 'Pay with PhonePe';
     }
   }
 }
 
-// Open Google Form for uploading screenshot with redirect back to main page
-function openScreenshotForm() {
-  // Create a URL that will redirect back to main page after submission
-  const name = (document.getElementById('name').value || '').trim();
-  const phone = (document.getElementById('phone').value || '').trim();
-  const email = (document.getElementById('email').value || '').trim();
-  
-  // Since we don't have entry IDs, we'll use the field names directly
-  // Google Forms will automatically map these to the correct fields
-  const redirectUrl = `${GOOGLE_FORM_URL}?usp=pp_url&Name=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}&Email=${encodeURIComponent(email)}&Order+ID=${encodeURIComponent(orderId)}`;
-  
-  // Open in new tab
-  window.open(redirectUrl, '_blank');
-}
-
-// Check if registration is complete (this would be called when returning from the form)
-function checkRegistrationComplete() {
-  // In a real implementation, you would check the server to see if the payment has been verified
-  // For this example, we'll simulate it with a timeout
-  showRegistrationComplete();
-}
-
-// Pay button click handler
-async function handlePayment(){
+// full flow: validate -> payment -> auto-submit
+async function autoSubmitAfterPayment(){
   if(!validateFormBeforePayment()) return;
+  const amount = Number((document.getElementById('payAmt') || {}).textContent) || PACKAGE_PRICING.FULL_CAMP;
+  
   try {
-    await submitFormToServer();
-  } catch(err){
-    console.error('handlePayment error', err);
-    showError('Registration error: ' + (err.message || err));
+    showLoading();
+    payBtn.disabled = true;
+    payBtn.textContent = 'Creating payment...';
+    
+    // Create PhonePe order
+    const formData = new FormData();
+    formData.append('action', 'createPhonePeOrder');
+    formData.append('amount', amount);
+    formData.append('name', (document.getElementById('name').value || '').trim());
+    formData.append('email', (document.getElementById('email').value || '').trim());
+    formData.append('phone', (document.getElementById('phone').value || '').trim());
+    
+    const response = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await response.json();
+    
+    if(data.success && data.paymentUrl) {
+      // Store form data in sessionStorage to retrieve after payment
+      const formDataObj = {
+        name: (document.getElementById('name').value || '').trim(),
+        age: (document.getElementById('age').value || '').trim(),
+        city: (document.getElementById('city').value || '').trim(),
+        email: (document.getElementById('email').value || '').trim(),
+        phone: (document.getElementById('phone').value || '').trim(),
+        insta: (document.getElementById('insta').value || '').trim(),
+        cop: (document.getElementById('cop').value || '').trim(),
+        package: (packageSel.value || 'FULL_CAMP'),
+        coupon: (couponApplied ? couponCodeApplied : ''),
+        couponApplied: (couponApplied ? '1' : '0'),
+        amount: amount
+      };
+      
+      sessionStorage.setItem('registrationFormData', JSON.stringify(formDataObj));
+      
+      // Redirect to PhonePe
+      window.location.href = data.paymentUrl;
+    } else {
+      hideLoading();
+      showError('Failed to create payment: ' + (data.error || 'Unknown error'));
+      payBtn.disabled = false;
+      payBtn.textContent = 'Pay with PhonePe';
+    }
+  } catch(err) {
+    console.error('Payment initiation error:', err);
+    hideLoading();
+    showError('Payment initiation failed: ' + (err.message || err));
+    payBtn.disabled = false;
+    payBtn.textContent = 'Pay with PhonePe';
   }
 }
 
-// Wire buttons
+// wire pay button
 if(payBtn){
-  payBtn.addEventListener('click', (ev) => { ev.preventDefault(); handlePayment(); });
+  payBtn.addEventListener('click', (ev) => { ev.preventDefault(); autoSubmitAfterPayment(); });
 } else {
   console.warn('Pay button missing (id=payBtn).');
-}
-
-if(screenshotBtn){
-  screenshotBtn.addEventListener('click', (ev) => { ev.preventDefault(); openScreenshotForm(); });
-} else {
-  console.warn('Screenshot button missing (id=screenshotBtn).');
-}
-
-// Check if we're returning from the form submission
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('formSubmitted') === 'true') {
-  checkRegistrationComplete();
 }
 
 // init amounts
 (function init(){
   currentFinal = PACKAGE_PRICING.FULL_CAMP;
   updateAmountUI();
+  
+  // You can change the banner image here if needed
+  // bannerImage.src = "https://your-image-url.com/banner.jpg";
 })();
 </script>
 </body>
